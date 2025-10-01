@@ -7,7 +7,7 @@
     "dev": "next dev",
     "start": "next start",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d out"
+    "deploy": "build"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
