@@ -13,9 +13,14 @@ export default function NewYearDiceGame() {
   const [showChanceCardModal, setShowChanceCardModal] = useState(false)
   const [isChanceCardAnimating, setIsChanceCardAnimating] = useState(false)
   
+  // 遊戲開始狀態
+  const [gameStarted, setGameStarted] = useState(false)
+  
   // 音效相關的狀態和 ref
   const [isAudioInitialized, setIsAudioInitialized] = useState(false)
+  const [isBackgroundMusicPlaying, setIsBackgroundMusicPlaying] = useState(false)
   const diceAudioRef = useRef<HTMLAudioElement | null>(null)
+  const backgroundAudioRef = useRef<HTMLAudioElement | null>(null)
 
   const exercises = ["深蹲", "伏地挺身", "仰臥起坐", "平板支撐 10秒", "深蹲", "伏地挺身"]
 
@@ -83,6 +88,64 @@ export default function NewYearDiceGame() {
     }
   }, [isAudioInitialized, initializeAudio])
 
+  // 背景音樂控制函數
+  const toggleBackgroundMusic = useCallback(() => {
+    if (backgroundAudioRef.current) {
+      if (isBackgroundMusicPlaying) {
+        backgroundAudioRef.current.pause()
+        setIsBackgroundMusicPlaying(false)
+        console.log('🔇 背景音樂已暫停')
+      } else {
+        backgroundAudioRef.current.play()
+        setIsBackgroundMusicPlaying(true)
+        console.log('🔊 背景音樂已播放')
+      }
+    }
+  }, [isBackgroundMusicPlaying])
+
+  // 開始遊戲函數
+  const startGame = useCallback(async () => {
+    console.log('🎮 開始遊戲...')
+    try {
+      // 播放背景音樂
+      if (!backgroundAudioRef.current) {
+        backgroundAudioRef.current = new Audio('/audio/bg.mp3')
+        backgroundAudioRef.current.loop = true
+        backgroundAudioRef.current.volume = 0.3
+        backgroundAudioRef.current.preload = 'auto'
+
+        // 只播放前30秒
+        backgroundAudioRef.current.addEventListener('timeupdate', () => {
+          if (backgroundAudioRef.current && backgroundAudioRef.current.currentTime >= 30) {
+            backgroundAudioRef.current.currentTime = 0
+          }
+        })
+        
+        try {
+          await backgroundAudioRef.current.play()
+          setIsBackgroundMusicPlaying(true)
+          console.log('🎵 背景音樂開始播放')
+        } catch (audioError) {
+          console.log('⚠️ 背景音樂播放失敗，繼續遊戲')
+        }
+      }
+      
+      // 初始化骰子音效
+      try {
+        await initializeAudio()
+      } catch (audioError) {
+        console.log('⚠️ 骰子音效初始化失敗，繼續遊戲')
+      }
+      
+      // 隱藏開始按鈕，顯示遊戲內容
+      setGameStarted(true)
+      console.log('✅ 遊戲開始完成')
+    } catch (error) {
+      console.error('❌ 開始遊戲失敗:', error)
+      // 即使背景音樂失敗，也繼續遊戲
+      setGameStarted(true)
+    }
+  }, [initializeAudio])
 
   const chanceCards = [
     "🎉 恭喜！獲得 20% 折扣碼",
@@ -310,6 +373,37 @@ export default function NewYearDiceGame() {
     )
   }
 
+  // 如果遊戲還沒開始，顯示開始遊戲畫面
+  if (!gameStarted) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-red-800 via-red-700 to-red-900 flex items-center justify-center relative overflow-hidden">
+        {/* 背景裝飾 */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-4 left-4 text-4xl sm:text-6xl animate-bounce">🏮</div>
+          <div className="absolute top-4 right-4 text-4xl sm:text-6xl animate-bounce" style={{ animationDelay: "0.5s" }}>🏮</div>
+          <div className="absolute top-16 left-1/4 text-2xl sm:text-4xl animate-pulse">🎆</div>
+          <div className="absolute top-20 right-1/4 text-2xl sm:text-4xl animate-pulse" style={{ animationDelay: "1s" }}>🎇</div>
+          <div className="absolute bottom-20 left-6 sm:left-12 text-2xl sm:text-3xl animate-spin">🪙</div>
+          <div className="absolute bottom-24 right-8 sm:right-16 text-2xl sm:text-3xl animate-spin" style={{ animationDelay: "2s" }}>🪙</div>
+        </div>
+
+        {/* 開始遊戲按鈕 */}
+        <div className="text-center z-10">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-yellow-400 mb-8 drop-shadow-lg">
+            禮盒 X Umrart 骰子遊戲
+          </h1>
+          <div className="text-xl sm:text-2xl md:text-3xl text-yellow-300 mb-12">🐎 Urmart 祝馬年行大運 🐎</div>
+          <Button
+            onClick={startGame}
+            className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-300 hover:to-yellow-400 text-red-800 font-bold text-xl sm:text-2xl md:text-3xl px-6 sm:px-8 md:px-12 py-3 sm:py-4 md:py-6 rounded-xl sm:rounded-2xl shadow-2xl transform transition-all duration-300 hover:scale-110 border-2 border-yellow-300 w-full max-w-xs sm:max-w-sm"
+          >
+            🎲 開始遊戲
+          </Button>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-800 via-red-700 to-red-900 flex flex-col relative overflow-hidden">
 
@@ -450,6 +544,19 @@ export default function NewYearDiceGame() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* 背景音樂控制按鈕 */}
+      <div className="fixed bottom-4 left-4 z-50">
+        <button
+          onClick={toggleBackgroundMusic}
+          className="bg-yellow-500 hover:bg-yellow-400 text-red-800 rounded-full w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center shadow-lg transform transition-all duration-300 hover:scale-110 border-2 border-yellow-300"
+          title={isBackgroundMusicPlaying ? "暫停背景音樂" : "播放背景音樂"}
+        >
+          <span className="text-lg sm:text-xl">
+            {isBackgroundMusicPlaying ? "🔊" : "🔇"}
+          </span>
+        </button>
       </div>
 
       <div className="text-center py-4 sm:py-8 px-4">
