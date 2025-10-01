@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef, useCallback } from "react"
+import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 
 export default function NewYearDiceGame() {
@@ -11,12 +12,77 @@ export default function NewYearDiceGame() {
   const [chanceCard, setChanceCard] = useState<string | null>(null)
   const [showChanceCardModal, setShowChanceCardModal] = useState(false)
   const [isChanceCardAnimating, setIsChanceCardAnimating] = useState(false)
-  const [diceARotation, setDiceARotation] = useState({ x: 0, y: 0, z: 0 })
-  const [diceBRotation, setDiceBRotation] = useState({ x: 0, y: 0, z: 0 })
-  const [diceAPosition, setDiceAPosition] = useState({ x: 0, y: 0 })
-  const [diceBPosition, setDiceBPosition] = useState({ x: 0, y: 0 })
+  
+  // 音效相關的狀態和 ref
+  const [isAudioInitialized, setIsAudioInitialized] = useState(false)
+  const diceAudioRef = useRef<HTMLAudioElement | null>(null)
 
   const exercises = ["深蹲", "伏地挺身", "仰臥起坐", "平板支撐 10秒", "深蹲", "伏地挺身"]
+
+  // 音效相關函數
+  const initializeAudio = useCallback(async () => {
+    console.log('🎵 初始化音效系統...')
+    try {
+      // 播放一次骰子音效並立即暫停，以激活瀏覽器的音效權限
+      const audio = new Audio('/audio/dice.mp3')
+      audio.volume = 0.1 // 低音量播放，避免突兀
+      await audio.play()
+      setTimeout(() => {
+        audio.pause()
+        audio.currentTime = 0
+        console.log('✅ 音效權限已激活並暫停')
+      }, 100) // 播放100ms後暫停
+
+      // 初始化實際的音效物件
+      diceAudioRef.current = new Audio('/audio/dice.mp3')
+      diceAudioRef.current.preload = 'auto'
+      diceAudioRef.current.volume = 1.0 // 骰子音效最大音量
+
+      setIsAudioInitialized(true)
+      console.log('✅ 音效系統初始化完成')
+    } catch (error) {
+      console.error('❌ 音效權限激活失敗或初始化錯誤:', error)
+      // 即使失敗也嘗試初始化，讓使用者可以嘗試其他互動
+      setIsAudioInitialized(true)
+    }
+  }, [])
+
+  // 播放骰子音效的函數 - 從第1秒開始播放3秒
+  const playDiceSound = useCallback(async () => {
+    if (!isAudioInitialized) {
+      await initializeAudio()
+    }
+    
+    try {
+      console.log('🎵 開始播放骰子音效（從第1秒開始，播放3秒）...')
+      // 建立新的音效物件（確保每次都是新的）
+      const audio = new Audio('/audio/dice.mp3')
+      audio.volume = 1.0
+      audio.muted = false
+      
+      // 等待音效載入完成
+      await new Promise((resolve) => {
+        audio.addEventListener('canplaythrough', resolve, { once: true })
+      })
+      
+      // 從第1秒開始播放
+      audio.currentTime = 1.0
+      await audio.play()
+      
+      // 3.5秒後停止播放
+      setTimeout(() => {
+        audio.pause()
+        audio.currentTime = 0
+        console.log('🔇 骰子音效已在3.5秒後停止')
+      }, 3500)
+      
+      console.log('✅ 骰子音效播放成功（從第1秒開始，播放3.5秒）!')
+    } catch (error) {
+      console.log('❌ 骰子音效播放失敗:', error)
+      console.log('💡 請檢查手機音量設定')
+    }
+  }, [isAudioInitialized, initializeAudio])
+
 
   const chanceCards = [
     "🎉 恭喜！獲得 20% 折扣碼",
@@ -27,96 +93,28 @@ export default function NewYearDiceGame() {
     "🎁 驚喜！獲得神秘禮物一份",
   ]
 
-  const rollDice = () => {
+  const rollDice = async () => {
     if (isRolling) return
     setIsRolling(true)
     setShowResultPopup(false)
+    
+    // 播放骰子音效
+    await playDiceSound()
 
-    const randomRotationsA = {
-      x: Math.random() * 1800 + 900,
-      y: Math.random() * 1800 + 900,
-      z: Math.random() * 1800 + 900,
-    }
-    const randomRotationsB = {
-      x: Math.random() * 1800 + 900,
-      y: Math.random() * 1800 + 900,
-      z: Math.random() * 1800 + 900,
-    }
+    // 生成最終結果
+    const newDiceAValue = Math.floor(Math.random() * 6) + 1
+    const newDiceBValue = exercises[Math.floor(Math.random() * exercises.length)]
 
-    const isMobile = window.innerWidth < 640
-    const moveRange = isMobile ? 60 : 100
-    const moveRangeY = isMobile ? 40 : 60
-
-    const randomPositionA = {
-      x: (Math.random() - 0.5) * moveRange,
-      y: (Math.random() - 0.5) * moveRangeY,
-    }
-    const randomPositionB = {
-      x: (Math.random() - 0.5) * moveRange,
-      y: (Math.random() - 0.5) * moveRangeY,
-    }
-
-    setDiceARotation(randomRotationsA)
-    setDiceBRotation(randomRotationsB)
-    setDiceAPosition(randomPositionA)
-    setDiceBPosition(randomPositionB)
-
+    // 3.5秒後顯示結果
     setTimeout(() => {
-      const newDiceAValue = Math.floor(Math.random() * 6) + 1
-      const newDiceBValue = exercises[Math.floor(Math.random() * exercises.length)]
-
       setDiceAValue(newDiceAValue)
       setDiceBValue(newDiceBValue)
-
-      const bounceRotationA = {
-        ...getFinalRotationForNumber(newDiceAValue),
-        x: getFinalRotationForNumber(newDiceAValue).x + (Math.random() - 0.5) * 30,
-        y: getFinalRotationForNumber(newDiceAValue).y + (Math.random() - 0.5) * 30,
-      }
-      const bounceRotationB = {
-        ...getFinalRotationForExercise(newDiceBValue),
-        x: getFinalRotationForExercise(newDiceBValue).x + (Math.random() - 0.5) * 30,
-        y: getFinalRotationForExercise(newDiceBValue).y + (Math.random() - 0.5) * 30,
-      }
-
-      setDiceARotation(bounceRotationA)
-      setDiceBRotation(bounceRotationB)
-      const bounceRange = isMobile ? 30 : 40
-      const bounceRangeY = isMobile ? 15 : 20
-      setDiceAPosition({ x: (Math.random() - 0.5) * bounceRange, y: (Math.random() - 0.5) * bounceRangeY })
-      setDiceBPosition({ x: (Math.random() - 0.5) * bounceRange, y: (Math.random() - 0.5) * bounceRangeY })
+      setIsRolling(false)
 
       setTimeout(() => {
-        const rollAdjustA = {
-          ...getFinalRotationForNumber(newDiceAValue),
-          z: getFinalRotationForNumber(newDiceAValue).z + (Math.random() - 0.5) * 15,
-        }
-        const rollAdjustB = {
-          ...getFinalRotationForExercise(newDiceBValue),
-          z: getFinalRotationForExercise(newDiceBValue).z + (Math.random() - 0.5) * 15,
-        }
-
-        setDiceARotation(rollAdjustA)
-        setDiceBRotation(rollAdjustB)
-        const rollRange = isMobile ? 15 : 20
-        const rollRangeY = isMobile ? 8 : 10
-        setDiceAPosition({ x: (Math.random() - 0.5) * rollRange, y: (Math.random() - 0.5) * rollRangeY })
-        setDiceBPosition({ x: (Math.random() - 0.5) * rollRange, y: (Math.random() - 0.5) * rollRangeY })
-
-        setTimeout(() => {
-          setDiceARotation(getFinalRotationForNumber(newDiceAValue))
-          setDiceBRotation(getFinalRotationForExercise(newDiceBValue))
-          setDiceAPosition({ x: 0, y: 0 })
-          setDiceBPosition({ x: 0, y: 0 })
-
-          setIsRolling(false)
-
-          setTimeout(() => {
-            setShowResultPopup(true)
-          }, 1500)
-        }, 800)
-      }, 600)
-    }, 2800)
+        setShowResultPopup(true)
+      }, 1000) // 延長到1秒，讓最終點數顯示更久
+    }, 3500) // 3.5秒動畫與音效同步
   }
 
   const drawChanceCard = () => {
@@ -194,28 +192,38 @@ export default function NewYearDiceGame() {
 
   const render3DDiceA = () => {
     return (
-      <div
+      <motion.div
         className="dice-container"
-        style={{
-          transform: `translate(${diceAPosition.x}px, ${diceAPosition.y}px)`,
-          transition: isRolling
-            ? diceAPosition.x === 0 && diceAPosition.y === 0
-              ? "transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55)"
-              : "transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)"
-            : "transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)",
+        animate={isRolling ? {
+          x: [0, 20, -15, 10, 0],
+          y: [0, -15, 25, -10, 0],
+          transition: {
+            duration: 3.5,
+            times: [0, 0.17, 0.43, 0.71, 1],
+            ease: "easeInOut"
+          }
+        } : {
+          x: 0,
+          y: 0,
+          transition: { duration: 0.5, ease: "easeOut" }
         }}
       >
-        <div
+        <motion.div
           className="dice-cube"
-          style={{
-            transform: `rotateX(${diceARotation.x}deg) rotateY(${diceARotation.y}deg) rotateZ(${diceARotation.z}deg)`,
-            transition: isRolling
-              ? Math.abs(diceARotation.x) > 500
-                ? "transform 2.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)"
-                : Math.abs(diceARotation.x - getFinalRotationForNumber(diceAValue).x) > 20
-                  ? "transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)"
-                  : "transform 0.8s cubic-bezier(0.23, 1, 0.32, 1)"
-              : "transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)",
+          animate={isRolling ? {
+            rotateX: [0, 1800, 3600, 5400, getFinalRotationForNumber(diceAValue).x],
+            rotateY: [0, 1800, 3600, 5400, getFinalRotationForNumber(diceAValue).y],
+            rotateZ: [0, 1800, 3600, 5400, getFinalRotationForNumber(diceAValue).z],
+            transition: {
+              duration: 3.5,
+              times: [0, 0.14, 0.43, 0.71, 1],
+              ease: [0.25, 0.46, 0.45, 0.94]
+            }
+          } : {
+            rotateX: getFinalRotationForNumber(diceAValue).x,
+            rotateY: getFinalRotationForNumber(diceAValue).y,
+            rotateZ: getFinalRotationForNumber(diceAValue).z,
+            transition: { duration: 0.5, ease: "easeOut" }
           }}
         >
           <div className="dice-face dice-face-front bg-gradient-to-br from-red-500 via-red-600 to-red-700 shadow-lg">
@@ -236,35 +244,45 @@ export default function NewYearDiceGame() {
           <div className="dice-face dice-face-bottom bg-gradient-to-br from-red-500 via-red-600 to-red-700 shadow-lg">
             {renderDots(6)}
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     )
   }
 
   const render3DDiceB = () => {
     return (
-      <div
+      <motion.div
         className="dice-container"
-        style={{
-          transform: `translate(${diceBPosition.x}px, ${diceBPosition.y}px)`,
-          transition: isRolling
-            ? diceBPosition.x === 0 && diceBPosition.y === 0
-              ? "transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55)"
-              : "transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)"
-            : "transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)",
+        animate={isRolling ? {
+          x: [0, -20, 15, -10, 0],
+          y: [0, 15, -25, 10, 0],
+          transition: {
+            duration: 3.5,
+            times: [0, 0.17, 0.43, 0.71, 1],
+            ease: "easeInOut"
+          }
+        } : {
+          x: 0,
+          y: 0,
+          transition: { duration: 0.5, ease: "easeOut" }
         }}
       >
-        <div
+        <motion.div
           className="dice-cube"
-          style={{
-            transform: `rotateX(${diceBRotation.x}deg) rotateY(${diceBRotation.y}deg) rotateZ(${diceBRotation.z}deg)`,
-            transition: isRolling
-              ? Math.abs(diceBRotation.x) > 500
-                ? "transform 2.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)"
-                : Math.abs(diceBRotation.x - getFinalRotationForExercise(diceBValue).x) > 20
-                  ? "transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)"
-                  : "transform 0.8s cubic-bezier(0.23, 1, 0.32, 1)"
-              : "transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)",
+          animate={isRolling ? {
+            rotateX: [0, 1800, 3600, 5400, getFinalRotationForExercise(diceBValue).x],
+            rotateY: [0, 1800, 3600, 5400, getFinalRotationForExercise(diceBValue).y],
+            rotateZ: [0, 1800, 3600, 5400, getFinalRotationForExercise(diceBValue).z],
+            transition: {
+              duration: 3.5,
+              times: [0, 0.14, 0.43, 0.71, 1],
+              ease: [0.25, 0.46, 0.45, 0.94]
+            }
+          } : {
+            rotateX: getFinalRotationForExercise(diceBValue).x,
+            rotateY: getFinalRotationForExercise(diceBValue).y,
+            rotateZ: getFinalRotationForExercise(diceBValue).z,
+            transition: { duration: 0.5, ease: "easeOut" }
           }}
         >
           {exercises.map((exercise, index) => {
@@ -287,8 +305,8 @@ export default function NewYearDiceGame() {
               </div>
             )
           })}
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     )
   }
 
@@ -376,7 +394,7 @@ export default function NewYearDiceGame() {
         </div>
       </div>
 
-      <div className="flex items-center justify-center px-4 py-4">
+      <div className="flex flex-col items-center justify-center px-4 py-4 gap-4">
         <Button
           onClick={rollDice}
           disabled={isRolling}
@@ -384,6 +402,7 @@ export default function NewYearDiceGame() {
         >
           {isRolling ? "🎲 擲骰中..." : "🎲 點擊擲骰"}
         </Button>
+        
       </div>
 
       <div className="flex-1 flex items-center justify-center px-4">

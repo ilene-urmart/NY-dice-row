@@ -4,20 +4,22 @@ import { Card } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 import { useRef, useEffect, useState } from "react"
 
-interface DiceComponentProps {
+interface MobileDiceComponentProps {
   value: number | string
   isRolling: boolean
   onClick: () => void
   type: "number" | "exercise"
 }
 
-export function DiceComponent({ value, isRolling, onClick, type }: DiceComponentProps) {
+export function MobileDiceComponent({ value, isRolling, onClick, type }: MobileDiceComponentProps) {
   // 音效相關的 ref 和狀態
   const diceAudioRef = useRef<HTMLAudioElement | null>(null)
   const backgroundAudioRef = useRef<HTMLAudioElement | null>(null)
   const [isBackgroundPlaying, setIsBackgroundPlaying] = useState(false)
+  const [hasUserInteracted, setHasUserInteracted] = useState(false)
+  const [isInitializing, setIsInitializing] = useState(false)
 
-  // 初始化音效 - 簡化版本
+  // 初始化音效系統
   useEffect(() => {
     console.log('🎵 初始化音效系統...')
     
@@ -25,14 +27,14 @@ export function DiceComponent({ value, isRolling, onClick, type }: DiceComponent
     const diceAudioUrl = '/audio/dice.mp3'
     diceAudioRef.current = new Audio(diceAudioUrl)
     diceAudioRef.current.preload = 'auto'
-    diceAudioRef.current.volume = 1.0 // 最大音量
+    diceAudioRef.current.volume = 1.0
     
-    // 背景音樂初始化（使用骰子音效作為背景音樂）
-    const backgroundAudioUrl = '/audio/dice.mp3'
+    // 背景音樂初始化
+    const backgroundAudioUrl = '/audio/background.mp3'
     backgroundAudioRef.current = new Audio(backgroundAudioUrl)
     backgroundAudioRef.current.preload = 'auto'
-    backgroundAudioRef.current.volume = 0.2 // 背景音樂音量較低
-    backgroundAudioRef.current.loop = true // 循環播放
+    backgroundAudioRef.current.volume = 0.3
+    backgroundAudioRef.current.loop = true
 
     console.log('✅ 音效系統初始化完成')
     
@@ -49,27 +51,63 @@ export function DiceComponent({ value, isRolling, onClick, type }: DiceComponent
     }
   }, [])
 
-  // 播放骰子音效的函數 - 超簡化版本
-  const playDiceSound = async () => {
-    console.log('🎵 嘗試播放骰子音效...')
+  // 首次使用者互動 - 激活音效權限
+  const initializeAudio = async () => {
+    if (hasUserInteracted) return
+    
+    setIsInitializing(true)
+    console.log('🎵 首次使用者互動 - 激活音效權限...')
     
     try {
-      // 建立新的音效物件（確保每次都是新的）
+      // 播放一次骰子音效來激活音效權限
+      const audio = new Audio('/audio/dice.mp3')
+      audio.volume = 0.1 // 低音量播放
+      await audio.play()
+      
+      // 立即暫停
+      setTimeout(() => {
+        audio.pause()
+        setHasUserInteracted(true)
+        setIsInitializing(false)
+        console.log('✅ 音效權限已激活！')
+      }, 100)
+      
+    } catch (error) {
+      console.log('❌ 音效權限激活失敗:', error)
+      // 即使失敗也標記為已互動，避免卡住
+      setHasUserInteracted(true)
+      setIsInitializing(false)
+    }
+  }
+
+  // 播放骰子音效的函數
+  const playDiceSound = async () => {
+    if (!hasUserInteracted) {
+      console.log('⚠️ 請先點擊「開始遊戲」激活音效權限')
+      return
+    }
+    
+    console.log('🎵 播放骰子音效...')
+    
+    try {
       const audio = new Audio('/audio/dice.mp3')
       audio.volume = 1.0
       audio.muted = false
       
-      // 直接播放
       await audio.play()
       console.log('✅ 骰子音效播放成功!')
     } catch (error) {
       console.log('❌ 骰子音效播放失敗:', error)
-      console.log('💡 請檢查手機音量設定')
     }
   }
 
-  // 切換背景音樂的函數 - 簡化版本
+  // 切換背景音樂的函數
   const toggleBackgroundMusic = async () => {
+    if (!hasUserInteracted) {
+      console.log('⚠️ 請先點擊「開始遊戲」激活音效權限')
+      return
+    }
+    
     console.log('🎵 切換背景音樂...')
     
     if (isBackgroundPlaying) {
@@ -83,8 +121,8 @@ export function DiceComponent({ value, isRolling, onClick, type }: DiceComponent
     } else {
       try {
         // 建立新的背景音樂物件
-        const audio = new Audio('/audio/dice.mp3')
-        audio.volume = 0.2
+        const audio = new Audio('/audio/background.mp3')
+        audio.volume = 0.3
         audio.loop = true
         audio.muted = false
         
@@ -94,18 +132,24 @@ export function DiceComponent({ value, isRolling, onClick, type }: DiceComponent
         console.log('🔊 背景音樂已開始播放')
       } catch (error) {
         console.log('❌ 背景音樂播放失敗:', error)
-        console.log('💡 請檢查手機音量設定')
       }
     }
   }
 
   // 處理點擊事件
   const handleClick = async () => {
+    if (!hasUserInteracted) {
+      console.log('⚠️ 請先點擊「開始遊戲」激活音效權限')
+      return
+    }
+    
     // 播放音效
     await playDiceSound()
     // 執行原本的點擊邏輯
     onClick()
   }
+
+  // 渲染骰子點數
   const renderDots = (num: number) => {
     const dots = []
     for (let i = 0; i < num; i++) {
@@ -114,6 +158,37 @@ export function DiceComponent({ value, isRolling, onClick, type }: DiceComponent
     return dots
   }
 
+  // 如果還沒有使用者互動，顯示開始遊戲按鈕
+  if (!hasUserInteracted) {
+    return (
+      <div className="flex flex-col items-center space-y-6">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-white mb-4">🎲 骰子遊戲</h2>
+          <p className="text-gray-300 mb-6">點擊開始遊戲以激活音效功能</p>
+        </div>
+        
+        <button
+          onClick={initializeAudio}
+          disabled={isInitializing}
+          className={cn(
+            "px-8 py-4 text-lg rounded-xl transition-all duration-200",
+            "bg-gradient-to-r from-green-500 to-green-600 hover:from-green-400 hover:to-green-500",
+            "text-white font-bold shadow-xl border-2 border-green-400",
+            "w-full max-w-xs min-h-[60px] flex items-center justify-center",
+            isInitializing && "opacity-50 cursor-not-allowed"
+          )}
+        >
+          {isInitializing ? "🎵 激活音效中..." : "🎮 開始遊戲"}
+        </button>
+        
+        <div className="text-xs text-gray-400 text-center max-w-xs">
+          首次使用需要激活音效權限，請確保手機音量已開啟
+        </div>
+      </div>
+    )
+  }
+
+  // 正常遊戲界面
   return (
     <div className="flex flex-col items-center space-y-4">
       <Card
@@ -159,9 +234,9 @@ export function DiceComponent({ value, isRolling, onClick, type }: DiceComponent
 
       <p className="text-sm text-muted-foreground">{isRolling ? "擲骰中..." : "點擊擲骰"}</p>
       
-      {/* 音效控制按鈕區域 - 手機優化版本 */}
+      {/* 音效控制按鈕區域 */}
       <div className="flex flex-col gap-3 w-full max-w-sm">
-        {/* 骰子音效測試按鈕 - 更大更明顯 */}
+        {/* 骰子音效測試按鈕 */}
         <button
           onClick={playDiceSound}
           className={cn(
@@ -174,7 +249,7 @@ export function DiceComponent({ value, isRolling, onClick, type }: DiceComponent
           🔊 測試骰子音效
         </button>
         
-        {/* 背景音樂控制按鈕 - 更大更明顯 */}
+        {/* 背景音樂控制按鈕 */}
         <button
           onClick={toggleBackgroundMusic}
           className={cn(
@@ -189,7 +264,7 @@ export function DiceComponent({ value, isRolling, onClick, type }: DiceComponent
         
         {/* 除錯資訊 */}
         <div className="text-xs text-gray-500 text-center">
-          如果沒有聲音，請檢查手機音量設定
+          ✅ 音效權限已激活 | 如果沒有聲音，請檢查手機音量設定
         </div>
       </div>
     </div>
