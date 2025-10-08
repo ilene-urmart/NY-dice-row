@@ -390,7 +390,7 @@ export default function NewYearDiceGame() {
         {/* 開始遊戲按鈕 */}
         <div className="text-center z-10">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-yellow-400 mb-8 drop-shadow-lg">
-            禮盒 X Umrart 骰子遊戲
+            禮盒 X Urmart 骰子遊戲
           </h1>
           <div className="text-xl sm:text-2xl md:text-3xl text-yellow-300 mb-12">🐎 Urmart 祝馬年行大運 🐎</div>
           <Button
