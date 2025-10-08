@@ -466,7 +466,7 @@ export default function NewYearDiceGame() {
 
       <div className="text-center py-4 sm:py-8 px-4">
         <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-yellow-400 mb-2 drop-shadow-lg text-balance">
-          禮盒 X Umrart 骰子遊戲
+          禮盒 X Urmart 骰子遊戲
         </h1>
         <div className="text-lg sm:text-xl md:text-2xl text-yellow-300">🐎 Urmart 祝馬年行大運 🐎</div>
       </div>
