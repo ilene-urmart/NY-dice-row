@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 export default function NewYearDiceGame() {
   const [diceAValue, setDiceAValue] = useState<number>(1);
   const [diceBValue, setDiceBValue] = useState<string>("深蹲");
+  const [diceBUnit, setDiceBUnit] = useState<string>("下");
   const [isRolling, setIsRolling] = useState(false);
   const [showResultPopup, setShowResultPopup] = useState(false);
   const [chanceCard, setChanceCard] = useState<string | null>(null);
@@ -24,12 +25,12 @@ export default function NewYearDiceGame() {
   const backgroundAudioRef = useRef<HTMLAudioElement | null>(null);
 
   const exercises = [
-    "深蹲",
-    "伏地挺身",
-    "仰臥起坐",
-    "平板支撐 10秒",
-    "深蹲",
-    "伏地挺身",
+    { name: "深蹲", unit: "下" },
+    { name: "波比跳", unit: "下" },
+    { name: "伏地挺身", unit: "下" },
+    { name: "仰臥起坐", unit: "下" },
+    { name: "平板撐", unit: "秒" },
+    { name: "開合跳", unit: "下" },
   ];
 
   // 音效相關函數
@@ -177,13 +178,13 @@ export default function NewYearDiceGame() {
 
     // 生成最終結果
     const newDiceAValue = Math.floor(Math.random() * 6) + 1;
-    const newDiceBValue =
-      exercises[Math.floor(Math.random() * exercises.length)];
+    const newExercise = exercises[Math.floor(Math.random() * exercises.length)];
 
     // 3.5秒後顯示結果
     setTimeout(() => {
       setDiceAValue(newDiceAValue);
-      setDiceBValue(newDiceBValue);
+      setDiceBValue(newExercise.name);
+      setDiceBUnit(newExercise.unit);
       setIsRolling(false);
 
       setTimeout(() => {
@@ -221,8 +222,8 @@ export default function NewYearDiceGame() {
     return rotations[num as keyof typeof rotations];
   };
 
-  const getFinalRotationForExercise = (exercise: string) => {
-    const exerciseIndex = exercises.indexOf(exercise);
+  const getFinalRotationForExercise = (exerciseName: string) => {
+    const exerciseIndex = exercises.findIndex((e) => e.name === exerciseName);
     return getFinalRotationForNumber((exerciseIndex % 6) + 1);
   };
 
@@ -432,7 +433,7 @@ export default function NewYearDiceGame() {
                 className={`dice-face ${faceClasses[index]} bg-gradient-to-br from-red-500 via-red-600 to-red-700 shadow-lg flex items-center justify-center`}
               >
                 <div className="text-white font-bold text-xs sm:text-sm text-center leading-tight px-1 sm:px-2 drop-shadow-lg">
-                  {exercise}
+                  {exercise.name}
                 </div>
               </div>
             );
@@ -525,19 +526,31 @@ export default function NewYearDiceGame() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-gradient-to-br from-yellow-100 to-yellow-50 p-6 sm:p-8 rounded-2xl shadow-2xl border-4 border-yellow-400 max-w-md w-full mx-4">
             <div className="text-center">
-              <h3 className="text-red-800 font-bold text-xl sm:text-2xl mb-4">
+              <h3 className="text-red-800 font-bold text-xl sm:text-2xl mb-6">
                 🎲 投擲結果 🎲
               </h3>
-              <div className="flex gap-4 sm:gap-8 items-center justify-center mb-6">
-                <div className="text-center">
-                  <div className="text-red-700 text-3xl sm:text-4xl font-bold">
-                    {diceAValue}
+              <div className="flex flex-col gap-4 sm:gap-8 items-center justify-center mb-6">
+                <div className="grid grid-cols-5 grid-rows-2 w-full items-center">
+                  {/** 投擲結果顯示區域 */}
+                  <div className="col-span-2 text-right text-red-700 text-3xl sm:text-4xl font-bold align-middle items-center">
+                    {" "}
+                    {diceAValue}{" "}
                   </div>
-                </div>
-                <div className="text-yellow-600 text-2xl sm:text-3xl">|</div>
-                <div className="text-center">
-                  <div className="text-red-700 text-lg sm:text-xl font-bold">
+                  <div className="col-span-1 flex h-full w-full col-span-1 flex w-full justify-center items-center">
+                    {" "}
+                    <div className="bg-yellow-400 w-[3px] h-[80%]"></div>{" "}
+                  </div>
+                  <div className="col-span-2 text-left text-red-700 text-lg sm:text-xl font-bold">
+                    {" "}
                     {diceBValue}
+                  </div>
+                  {/** 投擲結果顯示區域 - 說明 */}
+                  <div className="col-span-2 text-right">
+                    前進 {diceAValue} 步
+                  </div>
+                  <div className="col-span-1"></div>
+                  <div className="col-span-2 text-left">
+                    {`做 ${diceAValue} ${diceBUnit}${diceBValue}`}
                   </div>
                 </div>
               </div>
