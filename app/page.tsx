@@ -16,9 +16,9 @@ export default function NewYearDiceGame() {
   const [diceBUnit, setDiceBUnit] = useState<string>("下");
   const [isRolling, setIsRolling] = useState(false);
   const [showResultPopup, setShowResultPopup] = useState(false);
-  const [chanceCard, setChanceCard] = useState<CardType | null>(null);
-  const [showChanceCardModal, setShowChanceCardModal] = useState(false);
-  const [isChanceCardAnimating, setIsChanceCardAnimating] = useState(false);
+  const [card, setCard] = useState<CardType | null>(null);
+  const [showCardModal, setShowCardModal] = useState(false);
+  const [isCardAnimating, setIsCardAnimating] = useState(false);
   const [drawnCardIndexes, setDrawnCardIndexes] = useState<number[]>([]);
 
   // 遊戲開始狀態
@@ -386,8 +386,8 @@ export default function NewYearDiceGame() {
   }
 
   const closeChanceCardModal = () => {
-    setShowChanceCardModal(false);
-    setTimeout(() => setChanceCard(null), 300);
+    setShowCardModal(false);
+    setTimeout(() => setCard(null), 300);
   };
 
   const getFinalRotationForNumber = (num: number) => {
@@ -682,7 +682,7 @@ export default function NewYearDiceGame() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-800 via-red-700 to-red-900 flex flex-col relative overflow-hidden">
-      {showChanceCardModal && chanceCard && (
+      {showCardModal && card && (
         <div
           className="card-modal-overlay"
           onClick={closeChanceCardModal}
@@ -698,19 +698,19 @@ export default function NewYearDiceGame() {
               ×
             </button>
             <div className="card-modal-content">
-              <h2 className="font-bold text-lg">{chanceCard?.title}</h2>
-              {chanceCard?.desc && (
+              <h2 className="font-bold text-lg">{card?.title}</h2>
+              {card?.desc && (
                 <>
                   <div className="card-modal-desc font-normal text-sm sm:text-sm md:text-md text-black">
-                    {chanceCard?.desc &&
-                      chanceCard.desc
+                    {card?.desc &&
+                      card.desc
                         .split("＊")
                         .filter(Boolean)
                         .map((line, idx) => <p key={idx}>＊{line}</p>)}
                   </div>
                   <button
                     className="bg-gradient-to-r from-red-600 to-red-700 text-yellow-400 font-bold text-base px-2 sm:px-3 md:px-6 py-1 sm:py-2 md:py-3 rounded-sm sm:rounded-md shadow-2xl transform transition-all duration-300 hover:scale-110 border-2 border-yellow-400 w-[60%] max-w-xs sm:max-w-sm cursor-pointer"
-                    onClick={() => window.open(chanceCard?.cta, "_blank")}
+                    onClick={() => window.open(card?.cta, "_blank")}
                   >
                     領禮物去
                   </button>
@@ -842,16 +842,16 @@ export default function NewYearDiceGame() {
             <div className="flex gap-3 sm:gap-6">
               <div
                 className={`cursor-pointer hover:scale-105 transition-all duration-300 ${
-                  isChanceCardAnimating ? "animate-pulse" : ""
+                  isCardAnimating ? "animate-pulse" : ""
                 }`}
                 onClick={() =>
                   drawCard(
                     chanceCards,
                     drawnCardIndexes,
                     setDrawnCardIndexes,
-                    setChanceCard,
-                    setShowChanceCardModal,
-                    setIsChanceCardAnimating
+                    setCard,
+                    setShowCardModal,
+                    setIsCardAnimating
                   )
                 }
                 style={{
@@ -874,16 +874,16 @@ export default function NewYearDiceGame() {
               </div>
               <div
                 className={`cursor-pointer hover:scale-105 transition-all duration-300 ${
-                  isChanceCardAnimating ? "animate-pulse" : ""
+                  isCardAnimating ? "animate-pulse" : ""
                 }`}
                 onClick={() =>
                   drawCard(
                     destinyCards,
                     drawnCardIndexes,
                     setDrawnCardIndexes,
-                    setChanceCard,
-                    setShowChanceCardModal,
-                    setIsChanceCardAnimating
+                    setCard,
+                    setShowCardModal,
+                    setIsCardAnimating
                   )
                 }
                 style={{
