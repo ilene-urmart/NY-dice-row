@@ -96,7 +96,7 @@ export default function NewYearDiceGame() {
     {
       title: "邀請任一玩家跟你比伏地挺身，做比較多下的可以獲得一塊蛋白巧克力棒",
     },
-    { title: "邀請任一玩家跟你比平板撐，輸的人倒退 1 格" },
+    { title: "邀請任一玩家跟你比平板撐，輸的人倒退 3 格" },
   ];
 
   const destinyCards: CardType[] = [
@@ -250,14 +250,14 @@ export default function NewYearDiceGame() {
       audio.currentTime = 1.0;
       await audio.play();
 
-      // 3.5秒後停止播放
+      // 1秒後停止播放
       setTimeout(() => {
         audio.pause();
         audio.currentTime = 0;
-        console.log("🔇 骰子音效已在3.5秒後停止");
-      }, 3500);
+        console.log("🔇 骰子音效已在1秒後停止");
+      }, 1000);
 
-      console.log("✅ 骰子音效播放成功（從第1秒開始，播放3.5秒）!");
+      console.log("✅ 骰子音效播放成功（從第1秒開始，播放1秒）!");
     } catch (error) {
       console.log("❌ 骰子音效播放失敗:", error);
       console.log("💡 請檢查手機音量設定");
@@ -338,7 +338,7 @@ export default function NewYearDiceGame() {
     const newDiceAValue = Math.floor(Math.random() * 6) + 1;
     const newExercise = exercises[Math.floor(Math.random() * exercises.length)];
 
-    // 3.5秒後顯示結果
+    // 1秒後顯示結果
     setTimeout(() => {
       setDiceAValue(newDiceAValue);
       setDiceBValue(newExercise.name);
@@ -348,7 +348,7 @@ export default function NewYearDiceGame() {
       setTimeout(() => {
         setShowResultPopup(true);
       }, 1000); // 延長到1秒，讓最終點數顯示更久
-    }, 3500); // 3.5秒動畫與音效同步
+    }, 1000); // 1秒動畫與音效同步
   };
 
   function drawCard<T>(
@@ -461,7 +461,7 @@ export default function NewYearDiceGame() {
                 x: [0, 20, -15, 10, 0],
                 y: [0, -15, 25, -10, 0],
                 transition: {
-                  duration: 3.5,
+                  duration: 1,
                   times: [0, 0.17, 0.43, 0.71, 1],
                   ease: "easeInOut",
                 },
@@ -500,7 +500,7 @@ export default function NewYearDiceGame() {
                     getFinalRotationForNumber(diceAValue).z,
                   ],
                   transition: {
-                    duration: 3.5,
+                    duration: 1,
                     times: [0, 0.14, 0.43, 0.71, 1],
                     ease: [0.25, 0.46, 0.45, 0.94],
                   },
@@ -546,7 +546,7 @@ export default function NewYearDiceGame() {
                 x: [0, -20, 15, -10, 0],
                 y: [0, 15, -25, 10, 0],
                 transition: {
-                  duration: 3.5,
+                  duration: 1,
                   times: [0, 0.17, 0.43, 0.71, 1],
                   ease: "easeInOut",
                 },
@@ -585,7 +585,7 @@ export default function NewYearDiceGame() {
                     getFinalRotationForExercise(diceBValue).z,
                   ],
                   transition: {
-                    duration: 3.5,
+                    duration: 1,
                     times: [0, 0.14, 0.43, 0.71, 1],
                     ease: [0.25, 0.46, 0.45, 0.94],
                   },
