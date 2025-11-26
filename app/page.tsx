@@ -4,13 +4,19 @@ import { useState, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 
+type CardType = {
+  title: string;
+  desc?: string;
+  cta?: string;
+};
+
 export default function NewYearDiceGame() {
   const [diceAValue, setDiceAValue] = useState<number>(1);
   const [diceBValue, setDiceBValue] = useState<string>("深蹲");
   const [diceBUnit, setDiceBUnit] = useState<string>("下");
   const [isRolling, setIsRolling] = useState(false);
   const [showResultPopup, setShowResultPopup] = useState(false);
-  const [chanceCard, setChanceCard] = useState<string | null>(null);
+  const [chanceCard, setChanceCard] = useState<CardType | null>(null);
   const [showChanceCardModal, setShowChanceCardModal] = useState(false);
   const [isChanceCardAnimating, setIsChanceCardAnimating] = useState(false);
   const [drawnCardIndexes, setDrawnCardIndexes] = useState<number[]>([]);
@@ -34,32 +40,164 @@ export default function NewYearDiceGame() {
     { name: "開合跳", unit: "下" },
   ];
 
-  const chanceCards = [
-    "過年期間飽睡好，精神抖擻，再度獲得一次擲骰子的機會",
-    "若你目前擁有的商品種類少於 2 種，獲得一次抽命運卡的機會 (可以選擇不抽)",
-    "年夜飯不小心吃太飽，下回擲骰子點數 -1 點",
-    "估算一下今天已攝入的蛋白質含量，如達自身體重同等克數，前進一步，未達則後退一步",
-    "在 10 秒內快速說出 5 個蛋白點心品牌，成功可獲任一蛋白點心",
-    "在 10 秒內快速說出 3 個你最近買過的蛋白粉口味，成功可獲任一根蛋白酥條",
-    "擲骰子一次，擲出奇數可以獲得任一蛋白點心，擲出偶數則將自己任一蛋白點心送給右邊的人",
-    "挑戰請你左邊的人在平板支撐的時侯在你背上立一瓶礦泉水，在你撐不住之前成功立住，你們可以各自選擇一塊蛋白點心",
-    "邀請在場所有人模仿自己在健身房裡最討厭聽到的一句話 (例如「你還有幾組？」)，投票最像的人可前進兩格",
-    "平板支撐 30 秒，成功就獲得一根蛋白酥條",
-    "說出三個蛋白質含量高的年菜，成功就能拿一塊蛋白堅果巧克力棒",
-    "隨機指定一人做 30 下開合跳，若他完成，你們兩人各得一包即食肌酸",
-    "你是今天的教練！你可以指定任一玩家做 30 秒指定動作，成功可獲得一根蛋白酥條與一塊蛋白巧克力棒 (自由分配)",
-    "和左邊的玩家比誰能最快做完 10 下波比跳，贏的人獲得一包透明乳清",
-    "跟右邊的人比賽 10 秒內誰可以說出較多種的運動，輸的人把自己任一款蛋白點心放回禮盒中",
-    "一個人做深蹲，輸的人把自己任一款蛋白點心放回禮盒中",
-    "跟右邊的人比賽拇指角力，贏的人可以拿一塊蛋白巧克力棒",
-    "拿出手機，秀出你最近一次健身紀錄，若在 7 天內，獲得一根蛋白酥條",
-    "可選擇與你右邊的人交換一塊蛋白點心",
-    "可選擇與黑色啞鈴玩家交換一塊蛋白點心",
-    "可選擇讓你左邊的人將任一蛋白點心贈予你",
-    "可選擇跟在場任一你指定的人交換一塊蛋白點心",
-    "分享跟朋友遊玩的照片並分享到自己的 Instagram 限時動態並加註 #UrMart過年禮盒，完成可自由選擇獲得任一蛋白點心",
-    "邀請任一玩家跟你比伏地挺身，做比較多下的可以獲得一塊蛋白巧克力棒",
-    "邀請任一玩家跟你比平板撐，輸的人倒退 1 格",
+  const chanceCards: CardType[] = [
+    { title: "過年期間飽睡好，精神抖擻，再度獲得一次擲骰子的機會" },
+    {
+      title:
+        "若你目前擁有的商品種類少於 2 種，獲得一次抽命運卡的機會 (可以選擇不抽)",
+    },
+    { title: "年夜飯不小心吃太飽，下回擲骰子點數 -1 點" },
+    {
+      title:
+        "估算一下今天已攝入的蛋白質含量，如達自身體重同等克數，前進一步，未達則後退一步",
+    },
+    { title: "在 10 秒內快速說出 5 個蛋白點心品牌，成功可獲任一蛋白點心" },
+    {
+      title:
+        "在 10 秒內快速說出 3 個你最近買過的蛋白粉口味，成功可獲任一根蛋白酥條",
+    },
+    {
+      title:
+        "擲骰子一次，擲出奇數可以獲得任一蛋白點心，擲出偶數則將自己任一蛋白點心送給右邊的人",
+    },
+    {
+      title:
+        "挑戰請你左邊的人在平板支撐的時侯在你背上立一瓶礦泉水，在你撐不住之前成功立住，你們可以各自選擇一塊蛋白點心",
+    },
+    {
+      title:
+        "邀請在場所有人模仿自己在健身房裡最討厭聽到的一句話 (例如「你還有幾組？」)，投票最像的人可前進兩格",
+    },
+    { title: "平板支撐 30 秒，成功就獲得一根蛋白酥條" },
+    { title: "說出三個蛋白質含量高的年菜，成功就能拿一塊蛋白堅果巧克力棒" },
+    { title: "隨機指定一人做 30 下開合跳，若他完成，你們兩人各得一包即食肌酸" },
+    {
+      title:
+        "你是今天的教練！你可以指定任一玩家做 30 秒指定動作，成功可獲得一根蛋白酥條與一塊蛋白巧克力棒 (自由分配)",
+    },
+    { title: "和左邊的玩家比誰能最快做完 10 下波比跳，贏的人獲得一包透明乳清" },
+    {
+      title:
+        "跟右邊的人比賽 10 秒內誰可以說出較多種的運動，輸的人把自己任一款蛋白點心放回禮盒中",
+    },
+    { title: "一個人做深蹲，輸的人把自己任一款蛋白點心放回禮盒中" },
+    { title: "跟右邊的人比賽拇指角力，贏的人可以拿一塊蛋白巧克力棒" },
+    {
+      title: "拿出手機，秀出你最近一次健身紀錄，若在 7 天內，獲得一根蛋白酥條",
+    },
+    { title: "可選擇與你右邊的人交換一塊蛋白點心" },
+    { title: "可選擇與黑色啞鈴玩家交換一塊蛋白點心" },
+    { title: "可選擇讓你左邊的人將任一蛋白點心贈予你" },
+    { title: "可選擇跟在場任一你指定的人交換一塊蛋白點心" },
+    {
+      title:
+        "分享跟朋友遊玩的照片並分享到自己的 Instagram 限時動態並加註 #UrMart過年禮盒，完成可自由選擇獲得任一蛋白點心",
+    },
+    {
+      title: "邀請任一玩家跟你比伏地挺身，做比較多下的可以獲得一塊蛋白巧克力棒",
+    },
+    { title: "邀請任一玩家跟你比平板撐，輸的人倒退 1 格" },
+  ];
+
+  const destinyCards: CardType[] = [
+    {
+      title: "想去的健身房週年期間休息，暫停一次",
+    },
+    {
+      title: "遇到健身房人潮爆滿，改天再來，重新擲一次骰子",
+    },
+    {
+      title: "過年期間依然保持運動，早上晨跑了 30 分鐘，前進三步",
+    },
+    {
+      title: "肌肉痠痛中！暫停一次",
+    },
+    {
+      title: "新年新希望許下今年要更健康，抽一張肌會卡",
+    },
+    {
+      title: "休息是為了更好的暫停，暫停一次",
+    },
+    {
+      title: "沒抵擋住過年餐桌上的零食誘惑，把自己的蛋白堅果巧克力棒吃掉",
+    },
+    {
+      title:
+        "過年媽媽問你有沒有什麼比較健康的餅乾可以吃，你推薦了 UrPICK 蛋白酥脆條，獲得一根",
+    },
+    {
+      title: "吃完年夜飯想來點甜的，獲得一塊蛋白堅果巧克力棒",
+    },
+    {
+      title:
+        "今天跟朋友去健身房的時候櫃檯在做補充肌酸的推廣活動，獲得一包即食肌酸",
+    },
+    {
+      title:
+        "跟朋友去 UrMart 實體店的時候發現了新上架的酷東西，獲得一包即食肌酸",
+    },
+    {
+      title:
+        "想喝蛋白粉的你發現家裡的庫存喝完了忘記囤貨，如你有透明乳清請放回禮盒中",
+    },
+    {
+      title:
+        "剛健身了 1 個小時後喝了蛋白粉補充體力；把一盒透明乳清放回禮盒中並前進 2 格",
+    },
+    {
+      title: "寫日記的時候發現兩個禮拜沒運動了，倒退 2 格",
+    },
+    {
+      title: "年夜飯不小心吃太飽了，臨時起意做 30 下仰臥起坐",
+    },
+    {
+      title: "年夜飯吃了很多澱粉類，獲得滿滿能量；做 15 下波比跳",
+    },
+    {
+      title: "過年期間打算跟朋友一起去爬山踏青，全體一起做了 20 下深蹲當作熱身",
+    },
+    {
+      title:
+        "在運動的時候遇見藍色啞鈴玩家，分享給他你最近吃到覺得很好吃的 UrPICK 蛋白堅果巧克力棒；把你有的分他",
+    },
+    {
+      title: "去健身房前補充了肌酸，即將肌酸放回禮盒中",
+    },
+    {
+      title:
+        "今天早上出去運動的你現在有點餓了；如果你有蛋白酥脆條，請吃掉一根補充體力",
+    },
+    {
+      title: "如果你現在沒有蛋白堅果巧克力棒，補給一塊！",
+    },
+    {
+      title: "如果你現在沒有蛋白酥脆條，補給一根！",
+    },
+    {
+      title: "如果你現在已經有 3 種不一樣的點心，倒退 2 格",
+    },
+    {
+      title: "如果你現在已經有 2 種不一樣的點心，倒退 2 格",
+    },
+    {
+      title: "如果你現在沒有任一蛋白點心，前進 2 格",
+    },
+    {
+      title:
+        " 🎉 恭喜發財！你抽中 UrMart 紅包啦，獲得全站 9 折優惠碼！輸入「2026GIFTBOX9」領取優惠",
+      desc: "＊記得先截圖優惠碼喔！＊使用時間：即刻起～2026/7/31",
+      cta: "https://urmart.com/claim-coupon/9158",
+    },
+    {
+      title: "新春好運到！你在蛋白之神的祝福下，獲得 UrMart $99 免運券！",
+      desc: "＊記得先截圖優惠碼喔！＊使用時間：即刻起～2026/7/31",
+      cta: "https://urmart.com/claim-coupon/9159",
+    },
+    {
+      title: "你被財神爺光顧了！你獲得一包 UrPICK 的透明乳清啦！",
+      desc: "於獲得當下～2026/2/28 於 UrMart 消費滿 $799 時可免費獲得一包 UrP!CK 透明乳清（口味任選，贈完為止，不累贈）",
+      cta: "https://urmart.com/claim-coupon/9161",
+    },
   ];
 
   // 音效相關函數
@@ -213,37 +351,39 @@ export default function NewYearDiceGame() {
     }, 3500); // 3.5秒動畫與音效同步
   };
 
-  const drawChanceCard = () => {
-    if (isChanceCardAnimating) return;
-    setIsChanceCardAnimating(true);
+  function drawCard<T>(
+    cardList: T[],
+    drawnIndexes: number[],
+    setDrawnIndexes: React.Dispatch<React.SetStateAction<number[]>>,
+    setCard: React.Dispatch<React.SetStateAction<T | null>>,
+    setShowModal?: React.Dispatch<React.SetStateAction<boolean>>,
+    setIsAnimating?: React.Dispatch<React.SetStateAction<boolean>>
+  ) {
+    if (setIsAnimating) setIsAnimating(true);
 
-    const availableIndexes = chanceCards
-      .map((_, index) => index)
-      .filter((index) => !drawnCardIndexes.includes(index));
-
+    const availableIndexes = cardList
+      .map((_, idx) => idx)
+      .filter((idx) => !drawnIndexes.includes(idx));
     const indexesToDraw =
       availableIndexes.length > 0
         ? availableIndexes
-        : chanceCards.map((_, index) => index);
-
+        : cardList.map((_, idx) => idx);
     const randomIdx =
       indexesToDraw[Math.floor(Math.random() * indexesToDraw.length)];
-    const randomCard = chanceCards[randomIdx];
+    setCard(cardList[randomIdx]);
+    setDrawnIndexes((prev) =>
+      availableIndexes.length === 0 ? [randomIdx] : [...prev, randomIdx]
+    );
 
-    setChanceCard(randomCard);
-
-    setDrawnCardIndexes((prev) => {
-      if (availableIndexes.length === 0) {
-        return [randomIdx];
-      } else {
-        return [...prev, randomIdx];
-      }
-    });
-    setTimeout(() => {
-      setShowChanceCardModal(true);
-      setIsChanceCardAnimating(false);
-    }, 300);
-  };
+    if (setShowModal) {
+      setTimeout(() => {
+        setShowModal(true);
+        if (setIsAnimating) setIsAnimating(false);
+      }, 300);
+    } else if (setIsAnimating) {
+      setTimeout(() => setIsAnimating(false), 300);
+    }
+  }
 
   const closeChanceCardModal = () => {
     setShowChanceCardModal(false);
@@ -557,7 +697,26 @@ export default function NewYearDiceGame() {
             >
               ×
             </button>
-            <div className="card-modal-content">{chanceCard}</div>
+            <div className="card-modal-content">
+              <h2 className="font-bold text-lg">{chanceCard?.title}</h2>
+              {chanceCard?.desc && (
+                <>
+                  <div className="card-modal-desc font-normal text-sm sm:text-sm md:text-md text-black">
+                    {chanceCard?.desc &&
+                      chanceCard.desc
+                        .split("＊")
+                        .filter(Boolean)
+                        .map((line, idx) => <p key={idx}>＊{line}</p>)}
+                  </div>
+                  <button
+                    className="bg-gradient-to-r from-red-600 to-red-700 text-yellow-400 font-bold text-base px-2 sm:px-3 md:px-6 py-1 sm:py-2 md:py-3 rounded-sm sm:rounded-md shadow-2xl transform transition-all duration-300 hover:scale-110 border-2 border-yellow-400 w-[60%] max-w-xs sm:max-w-sm cursor-pointer"
+                    onClick={() => window.open(chanceCard?.cta, "_blank")}
+                  >
+                    領禮物去
+                  </button>
+                </>
+              )}
+            </div>
           </div>
         </div>
       )}
@@ -685,7 +844,16 @@ export default function NewYearDiceGame() {
                 className={`cursor-pointer hover:scale-105 transition-all duration-300 ${
                   isChanceCardAnimating ? "animate-pulse" : ""
                 }`}
-                onClick={drawChanceCard}
+                onClick={() =>
+                  drawCard(
+                    chanceCards,
+                    drawnCardIndexes,
+                    setDrawnCardIndexes,
+                    setChanceCard,
+                    setShowChanceCardModal,
+                    setIsChanceCardAnimating
+                  )
+                }
                 style={{
                   width: "var(--card-width)",
                   height: "var(--card-height)",
@@ -708,7 +876,16 @@ export default function NewYearDiceGame() {
                 className={`cursor-pointer hover:scale-105 transition-all duration-300 ${
                   isChanceCardAnimating ? "animate-pulse" : ""
                 }`}
-                onClick={drawChanceCard}
+                onClick={() =>
+                  drawCard(
+                    destinyCards,
+                    drawnCardIndexes,
+                    setDrawnCardIndexes,
+                    setChanceCard,
+                    setShowChanceCardModal,
+                    setIsChanceCardAnimating
+                  )
+                }
                 style={{
                   width: "var(--card-width)",
                   height: "var(--card-height)",
