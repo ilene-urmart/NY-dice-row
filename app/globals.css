@@ -230,12 +230,12 @@
 .main-first-bg {
   background-image: url("/01-bg-web.jpg");
   background-size: cover;
-  background-position: start;
+  background-position: left -20px top;
   background-repeat: repeat;
   padding: 25px;
   display: flex;
-  justify-content: end;
-  min-height: 100%;
+  flex-direction: column;
+  align-items: center;
 }
 
 .dice-container {
@@ -371,6 +371,11 @@
   flex-direction: column;
   gap: 20px;
   align-items: center;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  color: white !important;
 }
 
 @keyframes fadeIn {

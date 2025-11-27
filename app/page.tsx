@@ -3,6 +3,10 @@
 import { useState, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import { Autoplay, Navigation } from "swiper/modules";
 
 type CardType = {
   title: string;
@@ -628,7 +632,7 @@ export default function NewYearDiceGame() {
     return (
       <main className="main-first-bg">
         {/* 開始遊戲按鈕 */}
-        <section className="text-center py-4 sm:py-6 md:py-8 px-6 sm:px-8 md:px-10 w-[50%]">
+        <section className="text-center py-4 sm:py-6 md:py-8 px-6 sm:px-8 md:px-10 w-[50%] self-end">
           <header>
             <img
               src="/01-title.png"
@@ -652,6 +656,43 @@ export default function NewYearDiceGame() {
               style={{ transform: "translateY(-45px)" }}
             />
           </button>
+        </section>
+        <section
+          className="cursor-pointer"
+          style={{ transform: "translateY(-50px)" }}
+        >
+          <Swiper
+            navigation={true}
+            modules={[Navigation, Autoplay]}
+            style={{ width: "60vw", height: "300px" }}
+            loop={true}
+            autoplay={{
+              delay: 2500,
+              disableOnInteraction: false,
+            }}
+          >
+            <SwiperSlide>
+              {" "}
+              <img
+                src="/01-bn-01.png"
+                alt="差異化品項"
+              />{" "}
+            </SwiperSlide>
+            <SwiperSlide>
+              {" "}
+              <img
+                src="/01-bn-02.jpg"
+                alt="差異化品項"
+              />{" "}
+            </SwiperSlide>
+            <SwiperSlide>
+              {" "}
+              <img
+                src="/01-bn-03.jpg"
+                alt="差異化品項"
+              />{" "}
+            </SwiperSlide>
+          </Swiper>
         </section>
       </main>
     );
