@@ -333,36 +333,41 @@
 
 .card-modal {
   width: min(90vw, 320px);
-  height: min(80vh, 420px);
+  height: min(80vh, 460px);
   max-width: 320px;
-  background: linear-gradient(135deg, #fbbf24, #f59e0b);
-  border: 6px solid #dc2626;
-  border-radius: 20px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
   display: flex;
   flex-direction: column;
+  padding-top: 35px;
   align-items: center;
   justify-content: center;
   position: relative;
   transform: scale(0.5) rotateY(-180deg);
   animation: cardModalAppear 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55)
     forwards;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding-inline: 25px;
+}
+
+.card-modal-chance-bg {
+  background-image: url("/02-chance-back.png");
+}
+.card-modal-destiny-bg {
+  background-image: url("/02-destiny-back.png");
 }
 
 .card-modal-close {
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: 5%;
+  right: 7%;
   width: 35px;
   height: 35px;
-  background: rgba(220, 38, 38, 0.9);
-  border: 2px solid #fbbf24;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: #fbbf24;
   font-weight: bold;
   font-size: 18px;
   transition: all 0.2s ease;
@@ -375,7 +380,6 @@
 }
 
 .card-modal-content {
-  padding: 40px 30px 30px;
   text-align: center;
   color: #7f1d1d;
   font-weight: bold;
@@ -388,6 +392,14 @@
   flex-direction: column;
   gap: 20px;
   align-items: center;
+}
+.dice-result-bg {
+  background-image: url("/02-dice-result-bg.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 750px;
+  border: 1px solid white;
 }
 
 .swiper-button-prev,

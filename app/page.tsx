@@ -24,6 +24,7 @@ export default function NewYearDiceGame() {
   const [showCardModal, setShowCardModal] = useState(false);
   const [isCardAnimating, setIsCardAnimating] = useState(false);
   const [drawnCardIndexes, setDrawnCardIndexes] = useState<number[]>([]);
+  const [cardType, setCardType] = useState<string>("");
 
   // 遊戲開始狀態
   const [gameStarted, setGameStarted] = useState(false);
@@ -104,88 +105,88 @@ export default function NewYearDiceGame() {
   ];
 
   const destinyCards: CardType[] = [
-    {
-      title: "想去的健身房週年期間休息，暫停一次",
-    },
-    {
-      title: "遇到健身房人潮爆滿，改天再來，重新擲一次骰子",
-    },
-    {
-      title: "過年期間依然保持運動，早上晨跑了 30 分鐘，前進三步",
-    },
-    {
-      title: "肌肉痠痛中！暫停一次",
-    },
-    {
-      title: "新年新希望許下今年要更健康，抽一張肌會卡",
-    },
-    {
-      title: "休息是為了更好的暫停，暫停一次",
-    },
-    {
-      title: "沒抵擋住過年餐桌上的零食誘惑，把自己的蛋白堅果巧克力棒吃掉",
-    },
-    {
-      title:
-        "過年媽媽問你有沒有什麼比較健康的餅乾可以吃，你推薦了 UrPICK 蛋白酥脆條，獲得一根",
-    },
-    {
-      title: "吃完年夜飯想來點甜的，獲得一塊蛋白堅果巧克力棒",
-    },
-    {
-      title:
-        "今天跟朋友去健身房的時候櫃檯在做補充肌酸的推廣活動，獲得一包即食肌酸",
-    },
-    {
-      title:
-        "跟朋友去 UrMart 實體店的時候發現了新上架的酷東西，獲得一包即食肌酸",
-    },
-    {
-      title:
-        "想喝蛋白粉的你發現家裡的庫存喝完了忘記囤貨，如你有透明乳清請放回禮盒中",
-    },
-    {
-      title:
-        "剛健身了 1 個小時後喝了蛋白粉補充體力；把一盒透明乳清放回禮盒中並前進 2 格",
-    },
-    {
-      title: "寫日記的時候發現兩個禮拜沒運動了，倒退 2 格",
-    },
-    {
-      title: "年夜飯不小心吃太飽了，臨時起意做 30 下仰臥起坐",
-    },
-    {
-      title: "年夜飯吃了很多澱粉類，獲得滿滿能量；做 15 下波比跳",
-    },
-    {
-      title: "過年期間打算跟朋友一起去爬山踏青，全體一起做了 20 下深蹲當作熱身",
-    },
-    {
-      title:
-        "在運動的時候遇見藍色啞鈴玩家，分享給他你最近吃到覺得很好吃的 UrPICK 蛋白堅果巧克力棒；把你有的分他",
-    },
-    {
-      title: "去健身房前補充了肌酸，即將肌酸放回禮盒中",
-    },
-    {
-      title:
-        "今天早上出去運動的你現在有點餓了；如果你有蛋白酥脆條，請吃掉一根補充體力",
-    },
-    {
-      title: "如果你現在沒有蛋白堅果巧克力棒，補給一塊！",
-    },
-    {
-      title: "如果你現在沒有蛋白酥脆條，補給一根！",
-    },
-    {
-      title: "如果你現在已經有 3 種不一樣的點心，倒退 2 格",
-    },
-    {
-      title: "如果你現在已經有 2 種不一樣的點心，倒退 2 格",
-    },
-    {
-      title: "如果你現在沒有任一蛋白點心，前進 2 格",
-    },
+    // {
+    //   title: "想去的健身房週年期間休息，暫停一次",
+    // },
+    // {
+    //   title: "遇到健身房人潮爆滿，改天再來，重新擲一次骰子",
+    // },
+    // {
+    //   title: "過年期間依然保持運動，早上晨跑了 30 分鐘，前進三步",
+    // },
+    // {
+    //   title: "肌肉痠痛中！暫停一次",
+    // },
+    // {
+    //   title: "新年新希望許下今年要更健康，抽一張肌會卡",
+    // },
+    // {
+    //   title: "休息是為了更好的暫停，暫停一次",
+    // },
+    // {
+    //   title: "沒抵擋住過年餐桌上的零食誘惑，把自己的蛋白堅果巧克力棒吃掉",
+    // },
+    // {
+    //   title:
+    //     "過年媽媽問你有沒有什麼比較健康的餅乾可以吃，你推薦了 UrPICK 蛋白酥脆條，獲得一根",
+    // },
+    // {
+    //   title: "吃完年夜飯想來點甜的，獲得一塊蛋白堅果巧克力棒",
+    // },
+    // {
+    //   title:
+    //     "今天跟朋友去健身房的時候櫃檯在做補充肌酸的推廣活動，獲得一包即食肌酸",
+    // },
+    // {
+    //   title:
+    //     "跟朋友去 UrMart 實體店的時候發現了新上架的酷東西，獲得一包即食肌酸",
+    // },
+    // {
+    //   title:
+    //     "想喝蛋白粉的你發現家裡的庫存喝完了忘記囤貨，如你有透明乳清請放回禮盒中",
+    // },
+    // {
+    //   title:
+    //     "剛健身了 1 個小時後喝了蛋白粉補充體力；把一盒透明乳清放回禮盒中並前進 2 格",
+    // },
+    // {
+    //   title: "寫日記的時候發現兩個禮拜沒運動了，倒退 2 格",
+    // },
+    // {
+    //   title: "年夜飯不小心吃太飽了，臨時起意做 30 下仰臥起坐",
+    // },
+    // {
+    //   title: "年夜飯吃了很多澱粉類，獲得滿滿能量；做 15 下波比跳",
+    // },
+    // {
+    //   title: "過年期間打算跟朋友一起去爬山踏青，全體一起做了 20 下深蹲當作熱身",
+    // },
+    // {
+    //   title:
+    //     "在運動的時候遇見藍色啞鈴玩家，分享給他你最近吃到覺得很好吃的 UrPICK 蛋白堅果巧克力棒；把你有的分他",
+    // },
+    // {
+    //   title: "去健身房前補充了肌酸，即將肌酸放回禮盒中",
+    // },
+    // {
+    //   title:
+    //     "今天早上出去運動的你現在有點餓了；如果你有蛋白酥脆條，請吃掉一根補充體力",
+    // },
+    // {
+    //   title: "如果你現在沒有蛋白堅果巧克力棒，補給一塊！",
+    // },
+    // {
+    //   title: "如果你現在沒有蛋白酥脆條，補給一根！",
+    // },
+    // {
+    //   title: "如果你現在已經有 3 種不一樣的點心，倒退 2 格",
+    // },
+    // {
+    //   title: "如果你現在已經有 2 種不一樣的點心，倒退 2 格",
+    // },
+    // {
+    //   title: "如果你現在沒有任一蛋白點心，前進 2 格",
+    // },
     {
       title:
         " 🎉 恭喜發財！你抽中 UrMart 紅包啦，獲得全站 9 折優惠碼！輸入「2026GIFTBOX9」領取優惠",
@@ -715,47 +716,59 @@ export default function NewYearDiceGame() {
           onClick={closeChanceCardModal}
         >
           <div
-            className="card-modal"
+            className={`card-modal ${
+              cardType === "chance"
+                ? "card-modal-chance-bg"
+                : "card-modal-destiny-bg"
+            }`}
             onClick={(e) => e.stopPropagation()}
           >
             <button
-              className="card-modal-close"
+              className={`card-modal-close text-black border-5 ${
+                cardType === "chance"
+                  ? "text-black border-black"
+                  : "text-yellow-200 border-yellow-100"
+              }`}
               onClick={closeChanceCardModal}
             >
-              ×
+              X
             </button>
             <div className="card-modal-content">
-              <h2 className="font-bold text-lg">{card?.title}</h2>
+              <h2
+                className={`font-bold text-base sm:text-lg md:text-xl lg:text-2xl mb-4 text-center ${
+                  cardType !== "chance" && "text-yellow-50"
+                }`}
+              >
+                {card?.title}
+              </h2>
               {card?.desc && (
-                <>
-                  <div className="card-modal-desc font-normal text-sm sm:text-sm md:text-md text-black">
+                <div>
+                  <div className="card-modal-desc font-normal text-base sm:text-md md:text-md text-brown-100">
                     {card?.desc &&
                       card.desc
                         .split("＊")
                         .filter(Boolean)
                         .map((line, idx) => <p key={idx}>＊{line}</p>)}
                   </div>
-                  <button
-                    className="bg-gradient-to-r from-red-600 to-red-700 text-yellow-400 font-bold text-base px-2 sm:px-3 md:px-6 py-1 sm:py-2 md:py-3 rounded-sm sm:rounded-md shadow-2xl transform transition-all duration-300 hover:scale-110 border-2 border-yellow-400 w-[60%] max-w-xs sm:max-w-sm cursor-pointer"
-                    onClick={() => window.open(card?.cta, "_blank")}
-                  >
-                    領禮物去
+                  <button onClick={() => window.open(card?.cta, "_blank")}>
+                    <img
+                      src="/02-card-cta.png"
+                      alt="再骰一次"
+                      className="cursor-pointer hover:scale-105 transition-all duration-300"
+                    />
                   </button>
-                </>
+                </div>
               )}
             </div>
           </div>
         </div>
       )}
-      {/* 機會命運結果 */}
+      {/* 骰子結果 */}
       {showResultPopup && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-gradient-to-br from-yellow-100 to-yellow-50 p-6 sm:p-8 rounded-2xl shadow-2xl border-4 border-yellow-400 max-w-md w-full mx-4">
-            <div className="text-center">
-              <h3 className="text-red-800 font-bold text-xl sm:text-2xl mb-6">
-                🎲 投擲結果 🎲
-              </h3>
-              <div className="flex flex-col gap-4 sm:gap-8 items-center justify-center mb-6">
+          <div className="dice-result-bg">
+            <div className="text-center border border-white w-full">
+              <div className="flex flex-col gap-4 sm:gap-8 items-center justify-center mb-6 border-2 border-red-200">
                 <div className="grid grid-cols-5 grid-rows-2 w-full items-center">
                   {/** 投擲結果顯示區域 */}
                   <div className="col-span-2 text-right text-red-700 text-3xl sm:text-4xl font-bold align-middle items-center">
@@ -780,12 +793,16 @@ export default function NewYearDiceGame() {
                   </div>
                 </div>
               </div>
-              <Button
+              <button
                 onClick={() => setShowResultPopup(false)}
-                className="bg-gradient-to-br from-red-600 to-red-700 text-yellow-400 border-2 border-yellow-400 hover:from-red-500 hover:to-red-600 px-6 py-2 rounded-lg font-bold"
+                className="border-2 border-green-200 w-[60%]"
               >
-                確定
-              </Button>
+                <img
+                  src="/02-dice-result-cta.png"
+                  alt="再骰一次"
+                  className="cursor-pointer"
+                />
+              </button>
             </div>
           </div>
         </div>
@@ -798,7 +815,8 @@ export default function NewYearDiceGame() {
             src="/02-chance-front.png"
             alt="肌會卡"
             className="w-[45%] hover:-rotate-4 transition-all duration-300 cursor-pointer translate-y-18"
-            onClick={() =>
+            onClick={() => {
+              setCardType("chance");
               drawCard(
                 chanceCards,
                 drawnCardIndexes,
@@ -806,8 +824,8 @@ export default function NewYearDiceGame() {
                 setCard,
                 setShowCardModal,
                 setIsCardAnimating
-              )
-            }
+              );
+            }}
           />
         </section>
         {/* 骰子主區 */}
@@ -855,16 +873,17 @@ export default function NewYearDiceGame() {
             src="/02-destiny-front.png"
             alt="命運卡"
             className="w-[45%] hover:rotate-4 transition-all duration-300 cursor-pointer translate-y-18"
-            onClick={() =>
+            onClick={() => {
+              setCardType("destiny");
               drawCard(
-                chanceCards,
+                destinyCards,
                 drawnCardIndexes,
                 setDrawnCardIndexes,
                 setCard,
                 setShowCardModal,
                 setIsCardAnimating
-              )
-            }
+              );
+            }}
           />
         </section>
       </div>
