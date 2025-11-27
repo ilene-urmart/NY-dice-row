@@ -203,7 +203,7 @@
 :root {
   --dice-size: 100px;
   --dice-depth: 50px;
-  --dot-size: 16px;
+  --dot-size: 22px;
   --card-width: 112px;
   --card-height: 160px;
 }
@@ -226,6 +226,16 @@
     --card-width: 90px;
     --card-height: 130px;
   }
+}
+.main-first-bg {
+  background-image: url("/01-bg-web.jpg");
+  background-size: cover;
+  background-position: start;
+  background-repeat: repeat;
+  padding: 25px;
+  display: flex;
+  justify-content: end;
+  min-height: 100%;
 }
 
 .dice-container {

@@ -612,7 +612,7 @@ export default function NewYearDiceGame() {
                 key={index}
                 className={`dice-face ${faceClasses[index]} bg-gradient-to-br from-red-500 via-red-600 to-red-700 shadow-lg flex items-center justify-center`}
               >
-                <div className="text-white font-bold text-xs sm:text-sm text-center leading-tight px-1 sm:px-2 drop-shadow-lg">
+                <div className="text-white font-bold text-sm sm:text-lg text-center leading-tight px-1 sm:px-2 drop-shadow-lg">
                   {exercise.name}
                 </div>
               </div>
@@ -626,57 +626,34 @@ export default function NewYearDiceGame() {
   // 如果遊戲還沒開始，顯示開始遊戲畫面
   if (!gameStarted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-red-800 via-red-700 to-red-900 flex items-center justify-center relative overflow-hidden">
-        {/* 背景裝飾 */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-4 left-4 text-4xl sm:text-6xl animate-bounce">
-            🏮
-          </div>
-          <div
-            className="absolute top-4 right-4 text-4xl sm:text-6xl animate-bounce"
-            style={{ animationDelay: "0.5s" }}
-          >
-            🏮
-          </div>
-          <div className="absolute top-16 left-1/4 text-2xl sm:text-4xl animate-pulse">
-            🎆
-          </div>
-          <div
-            className="absolute top-20 right-1/4 text-2xl sm:text-4xl animate-pulse"
-            style={{ animationDelay: "1s" }}
-          >
-            🎇
-          </div>
-          <div className="absolute bottom-20 left-6 sm:left-12 text-2xl sm:text-3xl animate-spin">
-            🪙
-          </div>
-          <div
-            className="absolute bottom-24 right-8 sm:right-16 text-2xl sm:text-3xl animate-spin"
-            style={{ animationDelay: "2s" }}
-          >
-            🪙
-          </div>
-        </div>
-
+      <main className="main-first-bg">
         {/* 開始遊戲按鈕 */}
-        <div className="z-10 text-center">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-yellow-400 mb-8 drop-shadow-lg">
-            馬上成為蛋白富翁
-          </h1>
-          <div className="text-base sm:text-lg md:text-xl text-yellow-300 mb-12">
-            🏆 獲勝方式：集齊 3 種 不同蛋白點心並 跨越終點，即算勝利！ <br />
-            🎲 如擲出之骰子結果無法成功完成指定動作，即視為不成功，無法往前進
-            <br />
-            ❗️每個人可以準備一張衛生紙放蛋白點心喔！
-          </div>
-          <Button
+        <section className="text-center py-4 sm:py-6 md:py-8 px-6 sm:px-8 md:px-10 w-[50%]">
+          <header>
+            <img
+              src="/01-title.png"
+              alt="馬上成為蛋白富翁"
+            />
+          </header>
+          <section className="text-base sm:text-lg md:text-xl text-yellow-300">
+            <img
+              src="/01-desc.png"
+              alt="獲勝方式"
+              style={{ transform: "scale(1.2)" }}
+            />
+          </section>
+          <button
             onClick={startGame}
-            className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-300 hover:to-yellow-400 text-red-800 font-bold text-xl sm:text-2xl md:text-3xl px-6 sm:px-8 md:px-12 py-3 sm:py-4 md:py-6 rounded-xl sm:rounded-2xl shadow-2xl transform transition-all duration-300 hover:scale-110 border-2 border-yellow-300 w-full max-w-xs sm:max-w-sm"
+            className="cursor-pointer p-5"
           >
-            🎲 開始遊戲
-          </Button>
-        </div>
-      </div>
+            <img
+              src="/01-cta.png"
+              alt="開始遊戲"
+              style={{ transform: "translateY(-45px)" }}
+            />
+          </button>
+        </section>
+      </main>
     );
   }
 
@@ -763,37 +740,6 @@ export default function NewYearDiceGame() {
           </div>
         </div>
       )}
-
-      <div className="absolute inset-0 pointer-events-none hidden sm:block">
-        <div className="absolute top-4 left-4 sm:left-8 text-4xl sm:text-6xl animate-bounce">
-          🏮
-        </div>
-        <div
-          className="absolute top-4 right-4 sm:right-8 text-4xl sm:text-6xl animate-bounce"
-          style={{ animationDelay: "0.5s" }}
-        >
-          🏮
-        </div>
-        <div className="absolute top-16 left-1/4 text-2xl sm:text-4xl animate-pulse">
-          🎆
-        </div>
-        <div
-          className="absolute top-20 right-1/4 text-2xl sm:text-4xl animate-pulse"
-          style={{ animationDelay: "1s" }}
-        >
-          🎇
-        </div>
-        <div className="absolute bottom-20 left-6 sm:left-12 text-2xl sm:text-3xl animate-spin">
-          🪙
-        </div>
-        <div
-          className="absolute bottom-24 right-8 sm:right-16 text-2xl sm:text-3xl animate-spin"
-          style={{ animationDelay: "2s" }}
-        >
-          🪙
-        </div>
-      </div>
-
       <div className="text-center py-4 sm:py-8 px-4">
         <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-yellow-400 mb-2 drop-shadow-lg text-balance">
           禮盒 X Urmart 骰子遊戲
