@@ -204,6 +204,24 @@ export default function NewYearDiceGame() {
     },
   ];
 
+  const bannerData = [
+    {
+      path: "https://urmart.com/category/1784?page=1",
+      src: "/01-bn-01.png",
+      alt: "差異化品項",
+    },
+    {
+      path: "https://urmart.com/category/450?page=1&couponid=4063",
+      src: "/01-bn-02.jpg",
+      alt: "蛋白新手修煉手冊",
+    },
+    {
+      path: "https://urmart.com/tag/11342?page=1",
+      src: "/01-bn-03.jpg",
+      alt: "UrP!CK",
+    },
+  ];
+
   // 音效相關函數
   const initializeAudio = useCallback(async () => {
     console.log("🎵 初始化音效系統...");
@@ -671,27 +689,17 @@ export default function NewYearDiceGame() {
               disableOnInteraction: false,
             }}
           >
-            <SwiperSlide>
-              {" "}
-              <img
-                src="/01-bn-01.png"
-                alt="差異化品項"
-              />{" "}
-            </SwiperSlide>
-            <SwiperSlide>
-              {" "}
-              <img
-                src="/01-bn-02.jpg"
-                alt="差異化品項"
-              />{" "}
-            </SwiperSlide>
-            <SwiperSlide>
-              {" "}
-              <img
-                src="/01-bn-03.jpg"
-                alt="差異化品項"
-              />{" "}
-            </SwiperSlide>
+            {bannerData.map((banner, index) => (
+              <SwiperSlide key={index}>
+                <a href={banner.path}>
+                  <img
+                    src={banner.src}
+                    alt={banner.alt}
+                    className="w-full h-full object-contain rounded-lg shadow-lg"
+                  />
+                </a>
+              </SwiperSlide>
+            ))}
           </Swiper>
         </section>
       </main>
