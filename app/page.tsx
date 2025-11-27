@@ -672,7 +672,7 @@ export default function NewYearDiceGame() {
             <img
               src="/01-cta.png"
               alt="開始遊戲"
-              style={{ transform: "translateY(-45px)" }}
+              className="translate-y-[-40px] hover:scale-105 transition-all duration-300 heartbeat"
             />
           </button>
         </section>
@@ -863,7 +863,7 @@ export default function NewYearDiceGame() {
             <img
               src="/02-cta.png"
               alt="點擊擲骰子"
-              className="w-full h-full cursor-pointer hover:scale-105 transition-all duration-300"
+              className="w-full h-full cursor-pointer hover:scale-105 transition-all duration-300 heartbeat"
             />
           </button>
         </section>
