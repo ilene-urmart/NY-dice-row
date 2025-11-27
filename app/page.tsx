@@ -535,22 +535,22 @@ export default function NewYearDiceGame() {
                 }
           }
         >
-          <div className="dice-face dice-face-front bg-gradient-to-br from-red-500 via-red-600 to-red-700 shadow-lg">
+          <div className="dice-face dice-face-front bg-gradient-to-br from-white via-white to-gray-200 shadow-lg">
             {renderDots(1)}
           </div>
-          <div className="dice-face dice-face-right bg-gradient-to-br from-red-500 via-red-600 to-red-700 shadow-lg">
+          <div className="dice-face dice-face-right bg-gradient-to-br from-white via-white to-gray-200 shadow-lg">
             {renderDots(2)}
           </div>
-          <div className="dice-face dice-face-back bg-gradient-to-br from-red-500 via-red-600 to-red-700 shadow-lg">
+          <div className="dice-face dice-face-back bg-gradient-to-br from-white via-white to-gray-200 shadow-lg">
             {renderDots(3)}
           </div>
-          <div className="dice-face dice-face-left bg-gradient-to-br from-red-500 via-red-600 to-red-700 shadow-lg">
+          <div className="dice-face dice-face-left bg-gradient-to-br from-white via-white to-gray-200 shadow-lg">
             {renderDots(4)}
           </div>
-          <div className="dice-face dice-face-top bg-gradient-to-br from-red-500 via-red-600 to-red-700 shadow-lg">
+          <div className="dice-face dice-face-top bg-gradient-to-br from-white via-white to-gray-200 shadow-lg">
             {renderDots(5)}
           </div>
-          <div className="dice-face dice-face-bottom bg-gradient-to-br from-red-500 via-red-600 to-red-700 shadow-lg">
+          <div className="dice-face dice-face-bottom bg-gradient-to-br from-white via-white to-gray-200 shadow-lg">
             {renderDots(6)}
           </div>
         </motion.div>
@@ -632,7 +632,7 @@ export default function NewYearDiceGame() {
             return (
               <div
                 key={index}
-                className={`dice-face ${faceClasses[index]} bg-gradient-to-br from-red-500 via-red-600 to-red-700 shadow-lg flex items-center justify-center`}
+                className={`dice-face ${faceClasses[index]} bg-gradient-to-br from-yellow-500 via-yellow-600 to-yellow-700 shadow-lg flex items-center justify-center`}
               >
                 <div className="text-white font-bold text-sm sm:text-lg text-center leading-tight px-1 sm:px-2 drop-shadow-lg">
                   {exercise.name}
@@ -648,12 +648,12 @@ export default function NewYearDiceGame() {
   // 如果遊戲還沒開始，顯示開始遊戲畫面
   if (!gameStarted) {
     return (
-      <main className="main-first-bg">
+      <main className="main-first-container">
         {/* 開始遊戲按鈕 */}
         <section className="text-center py-4 sm:py-6 md:py-8 px-6 sm:px-8 md:px-10 w-[50%] self-end">
           <header>
             <img
-              src="/01-title.png"
+              src="/title.png"
               alt="馬上成為蛋白富翁"
             />
           </header>
@@ -675,10 +675,7 @@ export default function NewYearDiceGame() {
             />
           </button>
         </section>
-        <section
-          className="cursor-pointer"
-          style={{ transform: "translateY(-50px)" }}
-        >
+        <section className="cursor-pointer translate-y-[-50px]">
           <Swiper
             navigation={true}
             modules={[Navigation, Autoplay]}
@@ -691,7 +688,10 @@ export default function NewYearDiceGame() {
           >
             {bannerData.map((banner, index) => (
               <SwiperSlide key={index}>
-                <a href={banner.path}>
+                <a
+                  href={banner.path}
+                  target="_blank"
+                >
                   <img
                     src={banner.src}
                     alt={banner.alt}
@@ -707,7 +707,8 @@ export default function NewYearDiceGame() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-800 via-red-700 to-red-900 flex flex-col relative overflow-hidden">
+    <main className="main-second-bg min-h-screen bg-gradient-to-br from-red-800 via-red-700 to-red-900 flex flex-col relative overflow-hidden p-10">
+      {/* 卡片結果 */}
       {showCardModal && card && (
         <div
           className="card-modal-overlay"
@@ -746,7 +747,7 @@ export default function NewYearDiceGame() {
           </div>
         </div>
       )}
-
+      {/* 機會命運結果 */}
       {showResultPopup && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-gradient-to-br from-yellow-100 to-yellow-50 p-6 sm:p-8 rounded-2xl shadow-2xl border-4 border-yellow-400 max-w-md w-full mx-4">
@@ -789,16 +790,68 @@ export default function NewYearDiceGame() {
           </div>
         </div>
       )}
-      <div className="text-center py-4 sm:py-8 px-4">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-yellow-400 mb-2 drop-shadow-lg text-balance">
-          禮盒 X Urmart 骰子遊戲
-        </h1>
-        <div className="text-lg sm:text-xl md:text-2xl text-yellow-300">
-          🐎 Urmart 祝馬年行大運!! 🐎
-        </div>
+      {/* 測試畫面區 */}
+      <div className="main-second-container flex">
+        {/* 肌會卡 */}
+        <section className="flex justify-end items-center">
+          <img
+            src="/02-chance-front.png"
+            alt="肌會卡"
+            className="w-[45%] hover:scale-105 transition-all duration-300 cursor-pointer translate-y-18"
+          />
+        </section>
+        {/* 骰子主區 */}
+        <section className=" w-[45%] flex flex-col gap-10">
+          <header className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-yellow-400 mb-2 drop-shadow-lg text-balance">
+            <img
+              src="/title.png"
+              alt="title"
+              className="scale-110"
+            />
+          </header>
+          <div className="flex justify-center gap-14">
+            <div className="flex flex-col items-center">
+              <div
+                className="cursor-pointer transform transition-all duration-300 hover:scale-105"
+                onClick={rollDice}
+              >
+                {render3DDiceA()}
+              </div>
+            </div>
+            <div className="flex flex-col items-center">
+              <div
+                className="cursor-pointer transform transition-all duration-300 hover:scale-105"
+                onClick={rollDice}
+              >
+                {render3DDiceB()}
+              </div>
+            </div>
+          </div>
+          <button
+            className="p-6"
+            onClick={rollDice}
+            disabled={isRolling}
+          >
+            <img
+              src="/02-cta.png"
+              alt="點擊擲骰子"
+              className="w-full h-full cursor-pointer hover:scale-105 transition-all duration-300"
+            />
+          </button>
+        </section>
+        {/* 命運卡 */}
+        <section className="flex justify-start items-center">
+          <img
+            src="/02-destiny-front.png"
+            alt="命運卡"
+            className="w-[45%] hover:scale-105 transition-all duration-300 cursor-pointer translate-y-18"
+          />
+        </section>
       </div>
-
-      <div className="flex-1 flex items-center justify-center pt-4 sm:pt-8 px-4">
+      {/* 主畫面 */}
+      {/* <div className="text-center py-4 sm:py-8 px-4"></div> */}
+      {/* 骰子區域 */}
+      {/* <div className="flex-1 flex items-center justify-center pt-4 sm:pt-8 px-4">
         <div className="p-4 sm:p-8 md:p-12 rounded-2xl w-full max-w-2xl">
           <div className="flex flex-row gap-6 sm:gap-12 md:gap-16 items-center justify-center">
             <div className="flex flex-col items-center">
@@ -819,9 +872,9 @@ export default function NewYearDiceGame() {
             </div>
           </div>
         </div>
-      </div>
-
-      <div className="flex flex-col items-center justify-center px-4 py-4 gap-4">
+      </div> */}
+      {/* 遊戲開始按鈕 */}
+      {/* <div className="flex flex-col items-center justify-center px-4 py-4 gap-4">
         <Button
           onClick={rollDice}
           disabled={isRolling}
@@ -829,9 +882,10 @@ export default function NewYearDiceGame() {
         >
           {isRolling ? "🎲 擲骰中..." : "🎲 點擊擲骰"}
         </Button>
-      </div>
+      </div> */}
 
-      <div className="flex-1 flex items-center justify-center px-4">
+      {/* 肌會 和。命運 */}
+      {/* <div className="flex-1 flex items-center justify-center px-4">
         <div className="w-full max-w-6xl">
           <div className="flex flex-row items-center justify-center gap-4 sm:gap-8 md:gap-12">
             <div className="flex gap-3 sm:gap-6">
@@ -902,10 +956,10 @@ export default function NewYearDiceGame() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* 背景音樂控制按鈕 */}
-      <div className="fixed bottom-4 left-4 z-50">
+      {/* <div className="fixed bottom-4 left-4 z-50">
         <button
           onClick={toggleBackgroundMusic}
           className="bg-yellow-500 hover:bg-yellow-400 text-red-800 rounded-full w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center shadow-lg transform transition-all duration-300 hover:scale-110 border-2 border-yellow-300"
@@ -915,16 +969,7 @@ export default function NewYearDiceGame() {
             {isBackgroundMusicPlaying ? "🔊" : "🔇"}
           </span>
         </button>
-      </div>
-
-      <div className="text-center py-4 sm:py-8 px-4">
-        <div className="text-sm sm:text-base text-yellow-300 mb-2">
-          🎊 新年快樂！祝您馬年行大運！ 🎊
-        </div>
-        <div className="text-xs sm:text-sm text-yellow-200">
-          Urmart 禮盒 - 讓您的新年更精彩！
-        </div>
-      </div>
-    </div>
+      </div> */}
+    </main>
   );
 }
