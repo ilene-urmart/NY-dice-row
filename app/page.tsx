@@ -797,7 +797,17 @@ export default function NewYearDiceGame() {
           <img
             src="/02-chance-front.png"
             alt="肌會卡"
-            className="w-[45%] hover:scale-105 transition-all duration-300 cursor-pointer translate-y-18"
+            className="w-[45%] hover:-rotate-4 transition-all duration-300 cursor-pointer translate-y-18"
+            onClick={() =>
+              drawCard(
+                chanceCards,
+                drawnCardIndexes,
+                setDrawnCardIndexes,
+                setCard,
+                setShowCardModal,
+                setIsCardAnimating
+              )
+            }
           />
         </section>
         {/* 骰子主區 */}
@@ -844,7 +854,17 @@ export default function NewYearDiceGame() {
           <img
             src="/02-destiny-front.png"
             alt="命運卡"
-            className="w-[45%] hover:scale-105 transition-all duration-300 cursor-pointer translate-y-18"
+            className="w-[45%] hover:rotate-4 transition-all duration-300 cursor-pointer translate-y-18"
+            onClick={() =>
+              drawCard(
+                chanceCards,
+                drawnCardIndexes,
+                setDrawnCardIndexes,
+                setCard,
+                setShowCardModal,
+                setIsCardAnimating
+              )
+            }
           />
         </section>
       </div>
