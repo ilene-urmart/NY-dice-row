@@ -230,7 +230,7 @@
 .main-first-bg {
   background-image: url("/01-bg-web.jpg");
   background-size: cover;
-  background-position: left -20px top;
+  background-position: 15% top;
   background-repeat: repeat;
   padding: 25px;
   display: flex;
