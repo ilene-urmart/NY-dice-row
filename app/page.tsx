@@ -684,32 +684,37 @@ export default function NewYearDiceGame() {
             />
           </button>
         </section>
-        <section className="cursor-pointer translate-y-[-50px]">
-          <Swiper
-            navigation={true}
-            modules={[Navigation, Autoplay]}
-            style={{ width: "60vw", height: "300px" }}
-            loop={true}
-            autoplay={{
-              delay: 2500,
-              disableOnInteraction: false,
-            }}
-          >
-            {bannerData.map((banner, index) => (
-              <SwiperSlide key={index}>
-                <a
-                  href={banner.path}
-                  target="_blank"
-                >
-                  <img
-                    src={banner.src}
-                    alt={banner.alt}
-                    className="w-full h-full object-contain rounded-lg shadow-lg"
-                  />
-                </a>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+        <section className="cursor-pointer translate-y-[-20px] sm:translate-y-[-50px]">
+          <div className={isMobile ? "translate-y-[-20px]" : ""}>
+            <Swiper
+              navigation={true}
+              modules={[Navigation, Autoplay]}
+              style={{
+                width: `${isMobile ? "95vw" : "60vw"}`,
+                height: "300px",
+              }}
+              loop={true}
+              autoplay={{
+                delay: 2500,
+                disableOnInteraction: false,
+              }}
+            >
+              {bannerData.map((banner, index) => (
+                <SwiperSlide key={index}>
+                  <a
+                    href={banner.path}
+                    target="_blank"
+                  >
+                    <img
+                      src={banner.src}
+                      alt={banner.alt}
+                      className="w-full h-full object-contain rounded-lg shadow-lg"
+                    />
+                  </a>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
         </section>
       </main>
     );

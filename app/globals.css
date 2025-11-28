@@ -449,9 +449,11 @@
 @media (max-width: 899px) {
   .main-first-container {
     background-image: url("/01-bg-mobile.jpg");
-    background-size: cover;
-    background-position: center top;
-    height: 100vh;
+    background-position: center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    overflow: scroll;
     padding: 10px;
   }
 }
