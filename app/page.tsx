@@ -729,7 +729,7 @@ export default function NewYearDiceGame() {
       {/* 卡片結果 */}
       {showCardModal && card && (
         <div
-          className="card-modal-overlay"
+          className={`card-modal-overlay ${isMobile ? "p-0" : "p-[20px]"}`}
           onClick={closeChanceCardModal}
         >
           <div
@@ -752,7 +752,7 @@ export default function NewYearDiceGame() {
             </button>
             <div className="card-modal-content">
               <h2
-                className={`font-bold text-base sm:text-lg md:text-xl lg:text-2xl mb-4 text-center ${
+                className={`font-bold text-xl sm:text-lg md:text-xl lg:text-2xl mb-4 text-center ${
                   cardType !== "chance" && "text-yellow-50"
                 }`}
               >
@@ -771,7 +771,7 @@ export default function NewYearDiceGame() {
                     <img
                       src="/02-card-cta.png"
                       alt="再骰一次"
-                      className="cursor-pointer hover:scale-105 transition-all duration-300"
+                      className="cursor-pointer hover:scale-105 transition-all duration-300 "
                     />
                   </button>
                 </div>
@@ -791,12 +791,12 @@ export default function NewYearDiceGame() {
             alt=""
             className="absolute z-[-100] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px]"
           />
-          <div className="text-center w-[750px] h-[50vh] flex flex-col items-center justify-end pb-14 gap-8">
+          <div className="text-center w-full sm:w-[750px] h-[22vh] sm:h-[50vh] flex flex-col items-center justify-end sm:pb-14 gap-4 sm:gap-8">
             {/* 結果顯示區域 */}
-            <div className="grid grid-cols-6  w-full items-center text-4xl ">
+            <div className="grid grid-cols-6  w-full items-center text-xl sm:text-4xl ">
               <div className="col-span-2 text-right">
                 前進{" "}
-                <span className="text-red-800 text-7xl font-bold">
+                <span className="text-red-800 text-4xl sm:text-7xl font-bold">
                   {diceAValue}
                 </span>{" "}
                 步
@@ -807,7 +807,7 @@ export default function NewYearDiceGame() {
               </div>
               <div className="col-span-3 text-left">
                 做{" "}
-                <span className="text-red-800 text-7xl font-bold">
+                <span className="text-red-800 text-4xl sm:text-7xl font-bold">
                   {exerciseSets()}
                 </span>{" "}
                 {diceBUnit}
@@ -823,7 +823,7 @@ export default function NewYearDiceGame() {
               <img
                 src="/02-dice-result-cta.png"
                 alt="再骰一次"
-                className="cursor-pointer"
+                className="cursor-pointer shake"
               />
             </button>
           </div>
