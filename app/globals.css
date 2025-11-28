@@ -217,21 +217,21 @@
   :root {
     --dice-size: 80px;
     --dice-depth: 40px;
-    --dot-size: 12px;
+    --dot-size: 15px;
     --card-width: 100px;
     --card-height: 140px;
   }
 }
 
-@media (max-width: 480px) {
+/* @media (max-width: 480px) {
   :root {
     --dice-size: 70px;
     --dice-depth: 35px;
-    --dot-size: 10px;
+    --dot-size: 15px;
     --card-width: 90px;
     --card-height: 130px;
   }
-}
+} */
 .main-first-container {
   background-image: url("/01-bg-web.jpg");
   background-size: cover;

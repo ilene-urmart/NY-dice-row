@@ -415,6 +415,10 @@ export default function NewYearDiceGame() {
     }
   }
 
+  const exerciseSets = () => {
+    return Math.floor(Math.random() * 20) + 1;
+  };
+
   const closeChanceCardModal = () => {
     setShowCardModal(false);
     setTimeout(() => setCard(null), 300);
@@ -804,7 +808,7 @@ export default function NewYearDiceGame() {
               <div className="col-span-3 text-left">
                 做{" "}
                 <span className="text-red-800 text-7xl font-bold">
-                  {diceAValue}
+                  {exerciseSets()}
                 </span>{" "}
                 {diceBUnit}
                 <span className="text-red-800 font-bold"> {diceBValue}</span>
