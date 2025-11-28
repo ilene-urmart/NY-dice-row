@@ -445,3 +445,13 @@
 .heartbeat:hover {
   filter: brightness(1.15);
 }
+
+@media (max-width: 899px) {
+  .main-first-container {
+    background-image: url("/01-bg-mobile.jpg");
+    background-size: cover;
+    background-position: center top;
+    height: 100vh;
+    padding: 10px;
+  }
+}

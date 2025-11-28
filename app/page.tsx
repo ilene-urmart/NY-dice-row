@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -24,6 +24,14 @@ export default function NewYearDiceGame() {
   const [showCardModal, setShowCardModal] = useState(false);
   const [drawnCardIndexes, setDrawnCardIndexes] = useState<number[]>([]);
   const [cardType, setCardType] = useState<string>("");
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 900);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   // 遊戲開始狀態
   const [gameStarted, setGameStarted] = useState(false);
@@ -650,23 +658,24 @@ export default function NewYearDiceGame() {
     return (
       <main className="main-first-container">
         {/* 開始遊戲按鈕 */}
-        <section className="text-center py-4 sm:py-6 md:py-8 px-6 sm:px-8 md:px-10 w-[50%] self-end">
-          <header>
+        <section className="text-center py-2 sm:py-6 md:py-8 px-6 sm:px-8 md:px-10 w-full sm:w-[50%] self-center sm:self-end flex flex-col gap-2 sm:gap-0">
+          <header className={isMobile ? "mt-4" : ""}>
             <img
               src="/title.png"
               alt="馬上成為蛋白富翁"
+              className={isMobile ? "scale-[1.1]" : ""}
             />
           </header>
           <section className="text-base sm:text-lg md:text-xl text-yellow-300">
             <img
-              src="/01-desc.png"
+              src={isMobile ? "/01-desc-mobile.png" : "/01-desc-web.png"}
               alt="獲勝方式"
-              style={{ transform: "scale(1.2)" }}
+              className={isMobile ? "scale-[1.1]" : "scale-[1.2]"}
             />
           </section>
           <button
             onClick={startGame}
-            className="cursor-pointer p-5"
+            className={`cursor-pointer ${isMobile ? "p-0 mt-4" : "p-5"}`}
           >
             <img
               src="/01-cta.png"
