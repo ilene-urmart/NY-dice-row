@@ -2,7 +2,6 @@
 
 import { useState, useRef, useCallback, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -752,8 +751,8 @@ export default function NewYearDiceGame() {
             </button>
             <div className="card-modal-content">
               <h2
-                className={`font-bold text-xl sm:text-lg md:text-xl lg:text-2xl mb-4 text-center ${
-                  cardType !== "chance" && "text-yellow-50"
+                className={`font-bold text-2xl sm:text-lg md:text-xl lg:text-2xl mb-4 text-center ${
+                  cardType === "chance" ? "" : "text-yellow-50"
                 }`}
               >
                 {card?.title}
@@ -770,8 +769,8 @@ export default function NewYearDiceGame() {
                   <button onClick={() => window.open(card?.cta, "_blank")}>
                     <img
                       src="/02-card-cta.png"
-                      alt="再骰一次"
-                      className="cursor-pointer hover:scale-105 transition-all duration-300 "
+                      alt="前往領取"
+                      className="cursor-pointer hover:scale-105 transition-all duration-300 shake"
                     />
                   </button>
                 </div>
