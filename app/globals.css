@@ -393,14 +393,6 @@
   gap: 20px;
   align-items: center;
 }
-.dice-result-bg {
-  background-image: url("/02-dice-result-bg.png");
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  width: 750px;
-  border: 1px solid white;
-}
 
 .swiper-button-prev,
 .swiper-button-next {
@@ -447,5 +439,9 @@
   }
 }
 .heartbeat {
-  animation: heartbeat 1.5s infinite;
+  animation: heartbeat 1.5s infinite ease-in-out;
+}
+
+.heartbeat:hover {
+  filter: brightness(1.15);
 }
