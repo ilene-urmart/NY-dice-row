@@ -721,7 +721,7 @@ export default function NewYearDiceGame() {
   }
 
   return (
-    <main className="main-second-bg min-h-screen bg-gradient-to-br from-red-800 via-red-700 to-red-900 flex flex-col relative overflow-hidden p-10">
+    <main className="main-second-bg min-h-screen bg-gradient-to-br from-red-800 via-red-700 to-red-900 flex flex-col relative overflow-hidden p-2 sm:p-10">
       {/* 卡片結果 */}
       {showCardModal && card && (
         <div
@@ -826,13 +826,21 @@ export default function NewYearDiceGame() {
         </div>
       )}
       {/* 測試畫面區 */}
-      <div className="main-second-container flex">
+      <div
+        className={`main-second-container flex ${isMobile ? "flex-wrap" : ""}`}
+      >
         {/* 肌會卡 */}
-        <section className="flex justify-end items-center">
+        <section
+          className={`flex ${
+            isMobile ? "justify-center w-[50%]" : "justify-end"
+          } items-center `}
+        >
           <img
             src="/02-chance-front.png"
             alt="肌會卡"
-            className="w-[45%] hover:-rotate-4 transition-all duration-300 cursor-pointer translate-y-18"
+            className={`w-[80%] sm:w-[45%] hover:-rotate-4 transition-all duration-300 cursor-pointer ${
+              isMobile ? "" : "translate-y-18"
+            }`}
             onClick={() => {
               setCardType("chance");
               drawCard(
@@ -846,12 +854,17 @@ export default function NewYearDiceGame() {
           />
         </section>
         {/* 骰子主區 */}
-        <section className=" w-[45%] flex flex-col gap-10">
+        <section
+          className={`w-full sm:w-[45%] flex flex-col ${
+            isMobile ? "gap-4" : "gap-10"
+          }`}
+          style={{ order: isMobile ? "-1" : "" }}
+        >
           <header className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-yellow-400 mb-2 drop-shadow-lg text-balance">
             <img
               src="/title.png"
-              alt="title"
-              className="scale-110"
+              alt="馬上成為蛋白富翁"
+              className={isMobile ? "scale-[1.05]" : "scale-110"}
             />
           </header>
           <div className="flex justify-center gap-14">
@@ -885,11 +898,17 @@ export default function NewYearDiceGame() {
           </button>
         </section>
         {/* 命運卡 */}
-        <section className="flex justify-start items-center">
+        <section
+          className={`flex ${
+            isMobile ? "justify-center w-[50%]" : "justify-start"
+          } items-center `}
+        >
           <img
             src="/02-destiny-front.png"
             alt="命運卡"
-            className="w-[45%] hover:rotate-4 transition-all duration-300 cursor-pointer translate-y-18"
+            className={`w-[80%] sm:w-[45%] hover:rotate-4 transition-all duration-300 cursor-pointer ${
+              isMobile ? "" : "translate-y-18"
+            }`}
             onClick={() => {
               setCardType("destiny");
               drawCard(

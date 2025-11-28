@@ -250,7 +250,6 @@
   background-position: center;
   background-repeat: repeat;
   background-attachment: fixed;
-  display: flex;
   justify-content: center;
   align-items: center;
 }
@@ -455,5 +454,16 @@
     -o-background-size: cover;
     overflow: scroll;
     padding: 10px;
+  }
+  .main-second-bg {
+    background-image: url("/02-bg-mobile.jpg");
+    background-position: center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    overflow: scroll;
+    padding: 10px;
+    justify-content: start;
+    padding-top: 8%;
   }
 }
