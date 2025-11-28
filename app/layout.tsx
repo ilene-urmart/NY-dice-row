@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: "馬上成為蛋白富翁",
   description: "馬上成為蛋白富翁 - 禮盒 X Urmart 骰子遊戲",
   generator: "v0.app",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({
