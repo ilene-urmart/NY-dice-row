@@ -22,7 +22,6 @@ export default function NewYearDiceGame() {
   const [showResultPopup, setShowResultPopup] = useState(false);
   const [card, setCard] = useState<CardType | null>(null);
   const [showCardModal, setShowCardModal] = useState(false);
-  const [isCardAnimating, setIsCardAnimating] = useState(false);
   const [drawnCardIndexes, setDrawnCardIndexes] = useState<number[]>([]);
   const [cardType, setCardType] = useState<string>("");
 
@@ -105,88 +104,88 @@ export default function NewYearDiceGame() {
   ];
 
   const destinyCards: CardType[] = [
-    // {
-    //   title: "想去的健身房週年期間休息，暫停一次",
-    // },
-    // {
-    //   title: "遇到健身房人潮爆滿，改天再來，重新擲一次骰子",
-    // },
-    // {
-    //   title: "過年期間依然保持運動，早上晨跑了 30 分鐘，前進三步",
-    // },
-    // {
-    //   title: "肌肉痠痛中！暫停一次",
-    // },
-    // {
-    //   title: "新年新希望許下今年要更健康，抽一張肌會卡",
-    // },
-    // {
-    //   title: "休息是為了更好的暫停，暫停一次",
-    // },
-    // {
-    //   title: "沒抵擋住過年餐桌上的零食誘惑，把自己的蛋白堅果巧克力棒吃掉",
-    // },
-    // {
-    //   title:
-    //     "過年媽媽問你有沒有什麼比較健康的餅乾可以吃，你推薦了 UrPICK 蛋白酥脆條，獲得一根",
-    // },
-    // {
-    //   title: "吃完年夜飯想來點甜的，獲得一塊蛋白堅果巧克力棒",
-    // },
-    // {
-    //   title:
-    //     "今天跟朋友去健身房的時候櫃檯在做補充肌酸的推廣活動，獲得一包即食肌酸",
-    // },
-    // {
-    //   title:
-    //     "跟朋友去 UrMart 實體店的時候發現了新上架的酷東西，獲得一包即食肌酸",
-    // },
-    // {
-    //   title:
-    //     "想喝蛋白粉的你發現家裡的庫存喝完了忘記囤貨，如你有透明乳清請放回禮盒中",
-    // },
-    // {
-    //   title:
-    //     "剛健身了 1 個小時後喝了蛋白粉補充體力；把一盒透明乳清放回禮盒中並前進 2 格",
-    // },
-    // {
-    //   title: "寫日記的時候發現兩個禮拜沒運動了，倒退 2 格",
-    // },
-    // {
-    //   title: "年夜飯不小心吃太飽了，臨時起意做 30 下仰臥起坐",
-    // },
-    // {
-    //   title: "年夜飯吃了很多澱粉類，獲得滿滿能量；做 15 下波比跳",
-    // },
-    // {
-    //   title: "過年期間打算跟朋友一起去爬山踏青，全體一起做了 20 下深蹲當作熱身",
-    // },
-    // {
-    //   title:
-    //     "在運動的時候遇見藍色啞鈴玩家，分享給他你最近吃到覺得很好吃的 UrPICK 蛋白堅果巧克力棒；把你有的分他",
-    // },
-    // {
-    //   title: "去健身房前補充了肌酸，即將肌酸放回禮盒中",
-    // },
-    // {
-    //   title:
-    //     "今天早上出去運動的你現在有點餓了；如果你有蛋白酥脆條，請吃掉一根補充體力",
-    // },
-    // {
-    //   title: "如果你現在沒有蛋白堅果巧克力棒，補給一塊！",
-    // },
-    // {
-    //   title: "如果你現在沒有蛋白酥脆條，補給一根！",
-    // },
-    // {
-    //   title: "如果你現在已經有 3 種不一樣的點心，倒退 2 格",
-    // },
-    // {
-    //   title: "如果你現在已經有 2 種不一樣的點心，倒退 2 格",
-    // },
-    // {
-    //   title: "如果你現在沒有任一蛋白點心，前進 2 格",
-    // },
+    {
+      title: "想去的健身房週年期間休息，暫停一次",
+    },
+    {
+      title: "遇到健身房人潮爆滿，改天再來，重新擲一次骰子",
+    },
+    {
+      title: "過年期間依然保持運動，早上晨跑了 30 分鐘，前進三步",
+    },
+    {
+      title: "肌肉痠痛中！暫停一次",
+    },
+    {
+      title: "新年新希望許下今年要更健康，抽一張肌會卡",
+    },
+    {
+      title: "休息是為了更好的暫停，暫停一次",
+    },
+    {
+      title: "沒抵擋住過年餐桌上的零食誘惑，把自己的蛋白堅果巧克力棒吃掉",
+    },
+    {
+      title:
+        "過年媽媽問你有沒有什麼比較健康的餅乾可以吃，你推薦了 UrPICK 蛋白酥脆條，獲得一根",
+    },
+    {
+      title: "吃完年夜飯想來點甜的，獲得一塊蛋白堅果巧克力棒",
+    },
+    {
+      title:
+        "今天跟朋友去健身房的時候櫃檯在做補充肌酸的推廣活動，獲得一包即食肌酸",
+    },
+    {
+      title:
+        "跟朋友去 UrMart 實體店的時候發現了新上架的酷東西，獲得一包即食肌酸",
+    },
+    {
+      title:
+        "想喝蛋白粉的你發現家裡的庫存喝完了忘記囤貨，如你有透明乳清請放回禮盒中",
+    },
+    {
+      title:
+        "剛健身了 1 個小時後喝了蛋白粉補充體力；把一盒透明乳清放回禮盒中並前進 2 格",
+    },
+    {
+      title: "寫日記的時候發現兩個禮拜沒運動了，倒退 2 格",
+    },
+    {
+      title: "年夜飯不小心吃太飽了，臨時起意做 30 下仰臥起坐",
+    },
+    {
+      title: "年夜飯吃了很多澱粉類，獲得滿滿能量；做 15 下波比跳",
+    },
+    {
+      title: "過年期間打算跟朋友一起去爬山踏青，全體一起做了 20 下深蹲當作熱身",
+    },
+    {
+      title:
+        "在運動的時候遇見藍色啞鈴玩家，分享給他你最近吃到覺得很好吃的 UrPICK 蛋白堅果巧克力棒；把你有的分他",
+    },
+    {
+      title: "去健身房前補充了肌酸，即將肌酸放回禮盒中",
+    },
+    {
+      title:
+        "今天早上出去運動的你現在有點餓了；如果你有蛋白酥脆條，請吃掉一根補充體力",
+    },
+    {
+      title: "如果你現在沒有蛋白堅果巧克力棒，補給一塊！",
+    },
+    {
+      title: "如果你現在沒有蛋白酥脆條，補給一根！",
+    },
+    {
+      title: "如果你現在已經有 3 種不一樣的點心，倒退 2 格",
+    },
+    {
+      title: "如果你現在已經有 2 種不一樣的點心，倒退 2 格",
+    },
+    {
+      title: "如果你現在沒有任一蛋白點心，前進 2 格",
+    },
     {
       title:
         " 🎉 恭喜發財！你抽中 UrMart 紅包啦，獲得全站 9 折優惠碼！輸入「2026GIFTBOX9」領取優惠",
@@ -672,7 +671,7 @@ export default function NewYearDiceGame() {
             <img
               src="/01-cta.png"
               alt="開始遊戲"
-              className="translate-y-[-40px] hover:scale-105 transition-all duration-300 heartbeat"
+              className="translate-y-[-40px] transition-all duration-300 heartbeat"
             />
           </button>
         </section>
@@ -765,45 +764,50 @@ export default function NewYearDiceGame() {
       )}
       {/* 骰子結果 */}
       {showResultPopup && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="dice-result-bg">
-            <div className="text-center border border-white w-full">
-              <div className="flex flex-col gap-4 sm:gap-8 items-center justify-center mb-6 border-2 border-red-200">
-                <div className="grid grid-cols-5 grid-rows-2 w-full items-center">
-                  {/** 投擲結果顯示區域 */}
-                  <div className="col-span-2 text-right text-red-700 text-3xl sm:text-4xl font-bold align-middle items-center">
-                    {" "}
-                    {diceAValue}{" "}
-                  </div>
-                  <div className="col-span-1 flex h-full w-full col-span-1 flex w-full justify-center items-center">
-                    {" "}
-                    <div className="bg-yellow-400 w-[3px] h-[80%]"></div>{" "}
-                  </div>
-                  <div className="col-span-2 text-left text-red-700 text-lg sm:text-xl font-bold">
-                    {" "}
-                    {diceBValue}
-                  </div>
-                  {/** 投擲結果顯示區域 - 說明 */}
-                  <div className="col-span-2 text-right">
-                    前進 {diceAValue} 步
-                  </div>
-                  <div className="col-span-1"></div>
-                  <div className="col-span-2 text-left">
-                    {`做 ${diceAValue} ${diceBUnit}${diceBValue}`}
-                  </div>
-                </div>
+        <div
+          className="card-modal-overlay relative"
+          onClick={() => setShowResultPopup(false)}
+        >
+          <img
+            src="/02-dice-result-bg.png"
+            alt=""
+            className="absolute z-[-100] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px]"
+          />
+          <div className="text-center w-[750px] h-[50vh] flex flex-col items-center justify-end pb-14 gap-8">
+            {/* 結果顯示區域 */}
+            <div className="grid grid-cols-6  w-full items-center text-4xl ">
+              <div className="col-span-2 text-right">
+                前進{" "}
+                <span className="text-red-800 text-7xl font-bold">
+                  {diceAValue}
+                </span>{" "}
+                步
               </div>
-              <button
-                onClick={() => setShowResultPopup(false)}
-                className="border-2 border-green-200 w-[60%]"
-              >
-                <img
-                  src="/02-dice-result-cta.png"
-                  alt="再骰一次"
-                  className="cursor-pointer"
-                />
-              </button>
+              <div className="col-span-1 flex h-full w-full col-span-1 flex w-full justify-center items-center">
+                {" "}
+                <div className="bg-yellow-600 w-[4px] h-[65%]"></div>{" "}
+              </div>
+              <div className="col-span-3 text-left">
+                做{" "}
+                <span className="text-red-800 text-7xl font-bold">
+                  {diceAValue}
+                </span>{" "}
+                {diceBUnit}
+                <span className="text-red-800 font-bold"> {diceBValue}</span>
+              </div>
             </div>
+
+            {/* 按鈕 */}
+            <button
+              onClick={() => setShowResultPopup(false)}
+              className="w-[50%]"
+            >
+              <img
+                src="/02-dice-result-cta.png"
+                alt="再骰一次"
+                className="cursor-pointer"
+              />
+            </button>
           </div>
         </div>
       )}
@@ -822,8 +826,7 @@ export default function NewYearDiceGame() {
                 drawnCardIndexes,
                 setDrawnCardIndexes,
                 setCard,
-                setShowCardModal,
-                setIsCardAnimating
+                setShowCardModal
               );
             }}
           />
@@ -863,7 +866,7 @@ export default function NewYearDiceGame() {
             <img
               src="/02-cta.png"
               alt="點擊擲骰子"
-              className="w-full h-full cursor-pointer hover:scale-105 transition-all duration-300 heartbeat"
+              className="w-full h-full cursor-pointer transition-all duration-300 heartbeat disabled:opacity-50"
             />
           </button>
         </section>
@@ -880,8 +883,7 @@ export default function NewYearDiceGame() {
                 drawnCardIndexes,
                 setDrawnCardIndexes,
                 setCard,
-                setShowCardModal,
-                setIsCardAnimating
+                setShowCardModal
               );
             }}
           />
