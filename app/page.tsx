@@ -231,7 +231,6 @@ export default function NewYearDiceGame() {
 
   // 音效相關函數
   const initializeAudio = useCallback(async () => {
-    console.log("🎵 初始化音效系統...");
     try {
       // 播放一次骰子音效並立即暫停，以激活瀏覽器的音效權限
       const audio = new Audio("/audio/dice.mp3");
@@ -240,7 +239,6 @@ export default function NewYearDiceGame() {
       setTimeout(() => {
         audio.pause();
         audio.currentTime = 0;
-        console.log("✅ 音效權限已激活並暫停");
       }, 100); // 播放100ms後暫停
 
       // 初始化實際的音效物件
@@ -249,10 +247,7 @@ export default function NewYearDiceGame() {
       diceAudioRef.current.volume = 1.0; // 骰子音效最大音量
 
       setIsAudioInitialized(true);
-      console.log("✅ 音效系統初始化完成");
     } catch (error) {
-      console.error("❌ 音效權限激活失敗或初始化錯誤:", error);
-      // 即使失敗也嘗試初始化，讓使用者可以嘗試其他互動
       setIsAudioInitialized(true);
     }
   }, []);
@@ -263,94 +258,53 @@ export default function NewYearDiceGame() {
       await initializeAudio();
     }
 
-    try {
-      console.log("🎵 開始播放骰子音效（從第1秒開始，播放3秒）...");
-      // 建立新的音效物件（確保每次都是新的）
-      const audio = new Audio("/audio/dice.mp3");
-      audio.volume = 1.0;
-      audio.muted = false;
+    // 建立新的音效物件（確保每次都是新的）
+    const audio = new Audio("/audio/dice.mp3");
+    audio.volume = 1.0;
+    audio.muted = false;
 
-      // 等待音效載入完成
-      await new Promise((resolve) => {
-        audio.addEventListener("canplaythrough", resolve, { once: true });
-      });
+    // 等待音效載入完成
+    await new Promise((resolve) => {
+      audio.addEventListener("canplaythrough", resolve, { once: true });
+    });
 
-      // 從第1秒開始播放
-      audio.currentTime = 1.0;
-      await audio.play();
+    // 從第1秒開始播放
+    audio.currentTime = 1.0;
+    await audio.play();
 
-      // 1秒後停止播放
-      setTimeout(() => {
-        audio.pause();
-        audio.currentTime = 0;
-        console.log("🔇 骰子音效已在1秒後停止");
-      }, 1000);
-
-      console.log("✅ 骰子音效播放成功（從第1秒開始，播放1秒）!");
-    } catch (error) {
-      console.log("❌ 骰子音效播放失敗:", error);
-      console.log("💡 請檢查手機音量設定");
-    }
+    // 1秒後停止播放
+    setTimeout(() => {
+      audio.pause();
+      audio.currentTime = 0;
+    }, 1000);
   }, [isAudioInitialized, initializeAudio]);
 
-  // 背景音樂控制函數
-  const toggleBackgroundMusic = useCallback(() => {
-    if (backgroundAudioRef.current) {
-      if (isBackgroundMusicPlaying) {
-        backgroundAudioRef.current.pause();
-        setIsBackgroundMusicPlaying(false);
-        console.log("🔇 背景音樂已暫停");
-      } else {
-        backgroundAudioRef.current.play();
-        setIsBackgroundMusicPlaying(true);
-        console.log("🔊 背景音樂已播放");
-      }
+  const toggleBackgroundMusic = async () => {
+    if (isBackgroundMusicPlaying) {
+      backgroundAudioRef.current?.pause();
+      setIsBackgroundMusicPlaying(false);
+    } else {
+      backgroundAudioRef.current?.play();
+      setIsBackgroundMusicPlaying(true);
     }
-  }, [isBackgroundMusicPlaying]);
+  };
 
   // 開始遊戲函數
   const startGame = useCallback(async () => {
-    console.log("🎮 開始遊戲...");
     try {
-      // 播放背景音樂
       if (!backgroundAudioRef.current) {
         backgroundAudioRef.current = new Audio("/audio/bg.mp3");
         backgroundAudioRef.current.loop = true;
         backgroundAudioRef.current.volume = 0.3;
         backgroundAudioRef.current.preload = "auto";
 
-        // 只播放前30秒
-        backgroundAudioRef.current.addEventListener("timeupdate", () => {
-          if (
-            backgroundAudioRef.current &&
-            backgroundAudioRef.current.currentTime >= 30
-          ) {
-            backgroundAudioRef.current.currentTime = 0;
-          }
-        });
-
-        try {
-          await backgroundAudioRef.current.play();
-          setIsBackgroundMusicPlaying(true);
-          console.log("🎵 背景音樂開始播放");
-        } catch (audioError) {
-          console.log("⚠️ 背景音樂播放失敗，繼續遊戲");
-        }
+        await backgroundAudioRef.current.play();
+        setIsBackgroundMusicPlaying(true);
       }
 
-      // 初始化骰子音效
-      try {
-        await initializeAudio();
-      } catch (audioError) {
-        console.log("⚠️ 骰子音效初始化失敗，繼續遊戲");
-      }
-
-      // 隱藏開始按鈕，顯示遊戲內容
+      await initializeAudio();
       setGameStarted(true);
-      console.log("✅ 遊戲開始完成");
     } catch (error) {
-      console.error("❌ 開始遊戲失敗:", error);
-      // 即使背景音樂失敗，也繼續遊戲
       setGameStarted(true);
     }
   }, [initializeAudio]);
@@ -925,128 +879,18 @@ export default function NewYearDiceGame() {
           />
         </section>
       </div>
-      {/* 主畫面 */}
-      {/* <div className="text-center py-4 sm:py-8 px-4"></div> */}
-      {/* 骰子區域 */}
-      {/* <div className="flex-1 flex items-center justify-center pt-4 sm:pt-8 px-4">
-        <div className="p-4 sm:p-8 md:p-12 rounded-2xl w-full max-w-2xl">
-          <div className="flex flex-row gap-6 sm:gap-12 md:gap-16 items-center justify-center">
-            <div className="flex flex-col items-center">
-              <div
-                className="cursor-pointer transform transition-all duration-300 hover:scale-105"
-                onClick={rollDice}
-              >
-                {render3DDiceA()}
-              </div>
-            </div>
-            <div className="flex flex-col items-center">
-              <div
-                className="cursor-pointer transform transition-all duration-300 hover:scale-105"
-                onClick={rollDice}
-              >
-                {render3DDiceB()}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> */}
-      {/* 遊戲開始按鈕 */}
-      {/* <div className="flex flex-col items-center justify-center px-4 py-4 gap-4">
-        <Button
-          onClick={rollDice}
-          disabled={isRolling}
-          className="bg-gradient-to-br from-yellow-400 to-yellow-600 text-red-800 border-3 sm:border-4 border-red-600 hover:from-yellow-300 hover:to-yellow-500 px-4 sm:px-12 py-4 sm:py-6 rounded-full text-lg sm:text-xl font-bold shadow-2xl transform transition-all duration-300 hover:scale-110 disabled:opacity-50"
-        >
-          {isRolling ? "🎲 擲骰中..." : "🎲 點擊擲骰"}
-        </Button>
-      </div> */}
-
-      {/* 肌會 和。命運 */}
-      {/* <div className="flex-1 flex items-center justify-center px-4">
-        <div className="w-full max-w-6xl">
-          <div className="flex flex-row items-center justify-center gap-4 sm:gap-8 md:gap-12">
-            <div className="flex gap-3 sm:gap-6">
-              <div
-                className={`cursor-pointer hover:scale-105 transition-all duration-300 ${
-                  isCardAnimating ? "animate-pulse" : ""
-                }`}
-                onClick={() =>
-                  drawCard(
-                    chanceCards,
-                    drawnCardIndexes,
-                    setDrawnCardIndexes,
-                    setCard,
-                    setShowCardModal,
-                    setIsCardAnimating
-                  )
-                }
-                style={{
-                  width: "var(--card-width)",
-                  height: "var(--card-height)",
-                }}
-              >
-                <div className="w-full h-full bg-gradient-to-br from-red-600 to-red-800 border-3 sm:border-4 border-yellow-400 hover:shadow-2xl relative overflow-hidden rounded-xl flex flex-col items-center justify-center">
-                  <div className="absolute inset-0 bg-gradient-to-br from-red-500/20 to-transparent"></div>
-                  <div className="text-yellow-400 font-bold text-sm sm:text-lg md:text-xl z-10">
-                    肌會
-                  </div>
-                  <div className="absolute top-1 sm:top-2 right-1 sm:right-2 text-yellow-400 text-base sm:text-xl md:text-2xl">
-                    🧧
-                  </div>
-                  <div className="absolute bottom-1 sm:bottom-2 left-1 sm:left-2 text-yellow-400 text-xs sm:text-base md:text-lg">
-                    💰
-                  </div>
-                </div>
-              </div>
-              <div
-                className={`cursor-pointer hover:scale-105 transition-all duration-300 ${
-                  isCardAnimating ? "animate-pulse" : ""
-                }`}
-                onClick={() =>
-                  drawCard(
-                    destinyCards,
-                    drawnCardIndexes,
-                    setDrawnCardIndexes,
-                    setCard,
-                    setShowCardModal,
-                    setIsCardAnimating
-                  )
-                }
-                style={{
-                  width: "var(--card-width)",
-                  height: "var(--card-height)",
-                }}
-              >
-                <div className="w-full h-full bg-gradient-to-br from-red-600 to-red-800 border-3 sm:border-4 border-yellow-400 hover:shadow-2xl relative overflow-hidden rounded-xl flex flex-col items-center justify-center">
-                  <div className="absolute inset-0 bg-gradient-to-br from-red-500/20 to-transparent"></div>
-                  <div className="text-yellow-400 font-bold text-sm sm:text-lg md:text-xl z-10">
-                    命運
-                  </div>
-                  <div className="absolute top-1 sm:top-2 right-1 sm:right-2 text-yellow-400 text-base sm:text-xl md:text-2xl">
-                    🧧
-                  </div>
-                  <div className="absolute bottom-1 sm:bottom-2 left-1 sm:left-2 text-yellow-400 text-xs sm:text-base md:text-lg">
-                    💰
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> */}
-
       {/* 背景音樂控制按鈕 */}
-      {/* <div className="fixed bottom-4 left-4 z-50">
+      <div className="fixed bottom-4 left-4 z-50">
         <button
           onClick={toggleBackgroundMusic}
-          className="bg-yellow-500 hover:bg-yellow-400 text-red-800 rounded-full w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center shadow-lg transform transition-all duration-300 hover:scale-110 border-2 border-yellow-300"
+          className="text-red-800 rounded-full w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center shadow-lg transform transition-all duration-300 hover:scale-110 border-2 border-yellow-600 cursor-pointer hover:shadow-[0_0_16px_4px_rgba(250,204,21,0.7)]"
           title={isBackgroundMusicPlaying ? "暫停背景音樂" : "播放背景音樂"}
         >
           <span className="text-lg sm:text-xl">
             {isBackgroundMusicPlaying ? "🔊" : "🔇"}
           </span>
         </button>
-      </div> */}
+      </div>
     </main>
   );
 }
