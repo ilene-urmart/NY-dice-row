@@ -32,10 +32,8 @@ export default function NewYearDiceGame() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // 遊戲開始狀態
   const [gameStarted, setGameStarted] = useState(false);
 
-  // 音效相關的狀態和 ref
   const [isAudioInitialized, setIsAudioInitialized] = useState(false);
   const [isBackgroundMusicPlaying, setIsBackgroundMusicPlaying] =
     useState(false);
@@ -229,22 +227,19 @@ export default function NewYearDiceGame() {
     },
   ];
 
-  // 音效相關函數
   const initializeAudio = useCallback(async () => {
     try {
-      // 播放一次骰子音效並立即暫停，以激活瀏覽器的音效權限
       const audio = new Audio("/audio/dice.mp3");
-      audio.volume = 0.1; // 低音量播放，避免突兀
+      audio.volume = 0.1;
       await audio.play();
       setTimeout(() => {
         audio.pause();
         audio.currentTime = 0;
-      }, 100); // 播放100ms後暫停
+      }, 100);
 
-      // 初始化實際的音效物件
       diceAudioRef.current = new Audio("/audio/dice.mp3");
       diceAudioRef.current.preload = "auto";
-      diceAudioRef.current.volume = 1.0; // 骰子音效最大音量
+      diceAudioRef.current.volume = 1.0;
 
       setIsAudioInitialized(true);
     } catch (error) {
@@ -252,27 +247,22 @@ export default function NewYearDiceGame() {
     }
   }, []);
 
-  // 播放骰子音效的函數 - 從第1秒開始播放3秒
   const playDiceSound = useCallback(async () => {
     if (!isAudioInitialized) {
       await initializeAudio();
     }
 
-    // 建立新的音效物件（確保每次都是新的）
     const audio = new Audio("/audio/dice.mp3");
     audio.volume = 1.0;
     audio.muted = false;
 
-    // 等待音效載入完成
     await new Promise((resolve) => {
       audio.addEventListener("canplaythrough", resolve, { once: true });
     });
 
-    // 從第1秒開始播放
     audio.currentTime = 1.0;
     await audio.play();
 
-    // 1秒後停止播放
     setTimeout(() => {
       audio.pause();
       audio.currentTime = 0;
@@ -289,7 +279,6 @@ export default function NewYearDiceGame() {
     }
   };
 
-  // 開始遊戲函數
   const startGame = useCallback(async () => {
     try {
       if (!backgroundAudioRef.current) {
@@ -314,14 +303,11 @@ export default function NewYearDiceGame() {
     setIsRolling(true);
     setShowResultPopup(false);
 
-    // 播放骰子音效
     await playDiceSound();
 
-    // 生成最終結果
     const newDiceAValue = Math.floor(Math.random() * 6) + 1;
     const newExercise = exercises[Math.floor(Math.random() * exercises.length)];
 
-    // 1秒後顯示結果
     setTimeout(() => {
       setDiceAValue(newDiceAValue);
       setDiceBValue(newExercise.name);
@@ -330,8 +316,8 @@ export default function NewYearDiceGame() {
 
       setTimeout(() => {
         setShowResultPopup(true);
-      }, 1000); // 延長到1秒，讓最終點數顯示更久
-    }, 1000); // 1秒動畫與音效同步
+      }, 1000);
+    }, 1000);
   };
 
   function drawCard<T>(
@@ -610,11 +596,9 @@ export default function NewYearDiceGame() {
     );
   };
 
-  // 如果遊戲還沒開始，顯示開始遊戲畫面
   if (!gameStarted) {
     return (
       <main className="main-first-container">
-        {/* 開始遊戲按鈕 */}
         <section className="text-center py-2 sm:py-6 md:py-8 px-6 sm:px-8 md:px-10 w-full sm:w-[50%] self-center sm:self-end flex flex-col gap-2 sm:gap-0">
           <header className={isMobile ? "mt-4" : ""}>
             <img
@@ -679,7 +663,6 @@ export default function NewYearDiceGame() {
 
   return (
     <main className="main-second-bg min-h-screen bg-gradient-to-br from-red-800 via-red-700 to-red-900 flex flex-col relative overflow-hidden p-2 sm:p-10">
-      {/* 卡片結果 */}
       {showCardModal && card && (
         <div
           className={`card-modal-overlay ${isMobile ? "p-0" : "p-[20px]"}`}
@@ -733,7 +716,7 @@ export default function NewYearDiceGame() {
           </div>
         </div>
       )}
-      {/* 骰子結果 */}
+
       {showResultPopup && (
         <div
           className="card-modal-overlay relative"
@@ -782,11 +765,10 @@ export default function NewYearDiceGame() {
           </div>
         </div>
       )}
-      {/* 測試畫面區 */}
+
       <div
         className={`main-second-container flex ${isMobile ? "flex-wrap" : ""}`}
       >
-        {/* 肌會卡 */}
         <section
           className={`flex ${
             isMobile ? "justify-center w-[50%]" : "justify-end"
@@ -810,7 +792,7 @@ export default function NewYearDiceGame() {
             }}
           />
         </section>
-        {/* 骰子主區 */}
+
         <section
           className={`w-full sm:w-[45%] flex flex-col ${
             isMobile ? "gap-4" : "gap-10"
@@ -854,7 +836,7 @@ export default function NewYearDiceGame() {
             />
           </button>
         </section>
-        {/* 命運卡 */}
+
         <section
           className={`flex ${
             isMobile ? "justify-center w-[50%]" : "justify-start"
@@ -879,7 +861,7 @@ export default function NewYearDiceGame() {
           />
         </section>
       </div>
-      {/* 背景音樂控制按鈕 */}
+
       <div className="fixed bottom-4 left-4 z-50">
         <button
           onClick={toggleBackgroundMusic}
