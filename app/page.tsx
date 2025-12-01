@@ -313,13 +313,10 @@ export default function NewYearDiceGame() {
   const drawCard = <T,>(
     cardList: T[],
     drawnIndexes: number[],
-    setDrawnIndexes: React.Dispatch<React.SetStateAction<number[]>>,
+    setDrawnCardIndexes: React.Dispatch<React.SetStateAction<number[]>>,
     setCard: React.Dispatch<React.SetStateAction<T | null>>,
-    setShowModal?: React.Dispatch<React.SetStateAction<boolean>>,
-    setIsAnimating?: React.Dispatch<React.SetStateAction<boolean>>
+    setShowCardModal: React.Dispatch<React.SetStateAction<boolean>>
   ) => {
-    if (setIsAnimating) setIsAnimating(true);
-
     const availableIndexes = cardList
       .map((_, idx) => idx)
       .filter((idx) => !drawnIndexes.includes(idx));
@@ -330,18 +327,10 @@ export default function NewYearDiceGame() {
     const randomIdx =
       indexesToDraw[Math.floor(Math.random() * indexesToDraw.length)];
     setCard(cardList[randomIdx]);
-    setDrawnIndexes((prev) =>
+    setDrawnCardIndexes((prev) =>
       availableIndexes.length === 0 ? [randomIdx] : [...prev, randomIdx]
     );
-
-    if (setShowModal) {
-      setTimeout(() => {
-        setShowModal(true);
-        if (setIsAnimating) setIsAnimating(false);
-      }, 300);
-    } else if (setIsAnimating) {
-      setTimeout(() => setIsAnimating(false), 300);
-    }
+    setShowCardModal(true);
   };
 
   const exerciseSets = () => {
