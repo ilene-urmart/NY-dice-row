@@ -24,6 +24,12 @@ export default function NewYearDiceGame() {
   const [drawnCardIndexes, setDrawnCardIndexes] = useState<number[]>([]);
   const [cardType, setCardType] = useState<string>("");
   const [isMobile, setIsMobile] = useState(false);
+  const [gameStarted, setGameStarted] = useState(false);
+  const [isAudioInitialized, setIsAudioInitialized] = useState(false);
+  const [isBackgroundMusicPlaying, setIsBackgroundMusicPlaying] =
+    useState(false);
+  const diceAudioRef = useRef<HTMLAudioElement | null>(null);
+  const backgroundAudioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 900);
@@ -31,14 +37,6 @@ export default function NewYearDiceGame() {
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
-
-  const [gameStarted, setGameStarted] = useState(false);
-
-  const [isAudioInitialized, setIsAudioInitialized] = useState(false);
-  const [isBackgroundMusicPlaying, setIsBackgroundMusicPlaying] =
-    useState(false);
-  const diceAudioRef = useRef<HTMLAudioElement | null>(null);
-  const backgroundAudioRef = useRef<HTMLAudioElement | null>(null);
 
   const exercises = [
     { name: "深蹲", unit: "下" },
@@ -228,23 +226,19 @@ export default function NewYearDiceGame() {
   ];
 
   const initializeAudio = useCallback(async () => {
-    try {
-      const audio = new Audio("/audio/dice.mp3");
-      audio.volume = 0.1;
-      await audio.play();
-      setTimeout(() => {
-        audio.pause();
-        audio.currentTime = 0;
-      }, 100);
+    const audio = new Audio("/audio/dice.mp3");
+    audio.volume = 0.1;
+    await audio.play();
+    setTimeout(() => {
+      audio.pause();
+      audio.currentTime = 0;
+    }, 100);
 
-      diceAudioRef.current = new Audio("/audio/dice.mp3");
-      diceAudioRef.current.preload = "auto";
-      diceAudioRef.current.volume = 1.0;
+    diceAudioRef.current = new Audio("/audio/dice.mp3");
+    diceAudioRef.current.preload = "auto";
+    diceAudioRef.current.volume = 1.0;
 
-      setIsAudioInitialized(true);
-    } catch (error) {
-      setIsAudioInitialized(true);
-    }
+    setIsAudioInitialized(true);
   }, []);
 
   const playDiceSound = useCallback(async () => {
@@ -280,22 +274,18 @@ export default function NewYearDiceGame() {
   };
 
   const startGame = useCallback(async () => {
-    try {
-      if (!backgroundAudioRef.current) {
-        backgroundAudioRef.current = new Audio("/audio/bg.mp3");
-        backgroundAudioRef.current.loop = true;
-        backgroundAudioRef.current.volume = 0.3;
-        backgroundAudioRef.current.preload = "auto";
+    if (!backgroundAudioRef.current) {
+      backgroundAudioRef.current = new Audio("/audio/bg.mp3");
+      backgroundAudioRef.current.loop = true;
+      backgroundAudioRef.current.volume = 0.3;
+      backgroundAudioRef.current.preload = "auto";
 
-        await backgroundAudioRef.current.play();
-        setIsBackgroundMusicPlaying(true);
-      }
-
-      await initializeAudio();
-      setGameStarted(true);
-    } catch (error) {
-      setGameStarted(true);
+      await backgroundAudioRef.current.play();
+      setIsBackgroundMusicPlaying(true);
     }
+
+    await initializeAudio();
+    setGameStarted(true);
   }, [initializeAudio]);
 
   const rollDice = async () => {
@@ -320,14 +310,14 @@ export default function NewYearDiceGame() {
     }, 1000);
   };
 
-  function drawCard<T>(
+  const drawCard = <T,>(
     cardList: T[],
     drawnIndexes: number[],
     setDrawnIndexes: React.Dispatch<React.SetStateAction<number[]>>,
     setCard: React.Dispatch<React.SetStateAction<T | null>>,
     setShowModal?: React.Dispatch<React.SetStateAction<boolean>>,
     setIsAnimating?: React.Dispatch<React.SetStateAction<boolean>>
-  ) {
+  ) => {
     if (setIsAnimating) setIsAnimating(true);
 
     const availableIndexes = cardList
@@ -352,7 +342,7 @@ export default function NewYearDiceGame() {
     } else if (setIsAnimating) {
       setTimeout(() => setIsAnimating(false), 300);
     }
-  }
+  };
 
   const exerciseSets = () => {
     return Math.floor(Math.random() * 20) + 1;
