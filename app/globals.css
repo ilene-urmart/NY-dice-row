@@ -22,6 +22,7 @@
 
 .main-first-container {
   background-image: url("/01-bg-web.jpg");
+  background-color: #b91c1c;
   background-size: cover;
   background-position: 15% top;
   background-repeat: repeat;
@@ -34,6 +35,7 @@
 
 .main-second-bg {
   background-image: url("/02-bg-web.jpg");
+  background-color: #b91c1c;
   background-size: cover;
   background-position: center;
   background-repeat: repeat;
