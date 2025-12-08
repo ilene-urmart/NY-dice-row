@@ -207,6 +207,8 @@ export default function NewYearDiceGame() {
     },
   ];
 
+  const gameEnded = new Date() > new Date("2026-07-30T23:59:59");
+
   const bannerData = [
     {
       path: "https://urmart.com/category/1784?page=1",
@@ -574,6 +576,16 @@ export default function NewYearDiceGame() {
       </motion.div>
     );
   };
+
+  if (gameEnded) {
+    return (
+      <main className="bg-[url('/02-bg-mobile.jpg')] sm:bg-[url('/02-bg-web.jpg')] bg-cover bg-center min-h-screen flex justify-center items-center">
+        <h1 className="text-4xl sm:text-7xl font-bold text-[#D4A554]">
+          活動已結束
+        </h1>
+      </main>
+    );
+  }
 
   if (!gameStarted) {
     return (
