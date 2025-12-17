@@ -720,8 +720,8 @@ export default function NewYearDiceGame() {
             alt=""
             className="absolute z-[-100] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px]"
           />
-          <div className="text-center w-full sm:w-[750px] h-[22vh] sm:h-[50vh] flex flex-col items-center justify-end sm:pb-14 gap-4 sm:gap-8">
-            <div className="grid grid-cols-6  w-full items-center text-xl sm:text-4xl ">
+          <div className="text-center w-full sm:w-[750px] h-[150px] sm:h-[380px] flex flex-col items-center justify-end sm:pb-14 gap-4 sm:gap-8">
+            <div className="grid grid-cols-6  w-full items-center text-xl sm:text-4xl">
               <div className="col-span-2 text-right">
                 前進{" "}
                 <span className="text-red-800 text-4xl sm:text-7xl font-bold">
