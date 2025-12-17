@@ -46,32 +46,32 @@ export default function NewYearDiceGame() {
   ];
 
   const chanceCards: CardType[] = [
-    { title: "過年期間飽睡好，精神抖擻，再度獲得一次擲骰子的機會" },
+    { title: "過年期間吃飽睡好，精神抖擻，再度獲得一次擲骰子的機會" },
     {
       title:
-        "若你目前擁有的商品種類少於 2 種，獲得一次抽命運卡的機會 (可以選擇不抽)",
+        "若你目前擁有的商品種類少於 2 種，獲得一次抽命運卡的機會（可以選擇不抽）",
     },
     { title: "年夜飯不小心吃太飽，下回擲骰子點數 -1 點" },
     {
       title:
         "估算一下今天已攝入的蛋白質含量，如達自身體重同等克數，前進一步，未達則後退一步",
     },
-    { title: "在 10 秒內快速說出 5 個蛋白點心品牌，成功可獲任一蛋白點心" },
+    { title: "在 10 秒內快速說出 5 個蛋白粉品牌，成功可選擇任一蛋白點心" },
     {
       title:
-        "在 10 秒內快速說出 3 個你最近買過的蛋白粉口味，成功可獲任一根蛋白酥條",
+        "在 10 秒內快速說出 3 個你最近買過的蛋白粉口味，成功可獲得一根蛋白酥脆條",
     },
     {
       title:
-        "擲骰子一次，擲出奇數可以獲得任一蛋白點心，擲出偶數則將自己任一蛋白點心送給右邊的人",
+        "擲骰子一次，擲出奇數可以獲得任一蛋白點心，擲出偶數則將自己任一款蛋白點心送給右邊的人",
     },
     {
       title:
-        "挑戰請你左邊的人在平板支撐的時侯在你背上立一瓶礦泉水，在你撐不住之前成功立住，你們可以各自選擇一塊蛋白點心",
+        "跟你左邊的人組成一組！一個人平板撐，一個人在他背上立水瓶；成功的話兩人可各選擇一款想要的蛋白點心",
     },
     {
       title:
-        "邀請在場所有人模仿自己在健身房裡最討厭聽到的一句話 (例如「你還有幾組？」)，投票最像的人可前進兩格",
+        "邀請在場所有人模仿自己在健身房裡最討厭聽到的一句話（例如「你還有幾組？」），投票最像的人可前進兩格",
     },
     { title: "平板支撐 30 秒，成功就獲得一根蛋白酥條" },
     { title: "說出三個蛋白質含量高的年菜，成功就能拿一塊蛋白堅果巧克力棒" },
@@ -85,21 +85,23 @@ export default function NewYearDiceGame() {
       title:
         "跟右邊的人比賽 10 秒內誰可以說出較多種的運動，輸的人把自己任一款蛋白點心放回禮盒中",
     },
-    { title: "一個人做深蹲，輸的人把自己任一款蛋白點心放回禮盒中" },
-    { title: "跟右邊的人比賽拇指角力，贏的人可以拿一塊蛋白巧克力棒" },
-    {
-      title: "拿出手機，秀出你最近一次健身紀錄，若在 7 天內，獲得一根蛋白酥條",
-    },
-    { title: "可選擇與你右邊的人交換一塊蛋白點心" },
-    { title: "可選擇與黑色啞鈴玩家交換一塊蛋白點心" },
-    { title: "可選擇讓你左邊的人將任一蛋白點心贈予你" },
-    { title: "可選擇跟在場任一你指定的人交換一塊蛋白點心" },
+    { title: "指定一名玩家玩猜拳，輸的人把自己任一款蛋白點心放回禮盒中" },
+    { title: "跟右邊的人比賽拇指摔角，贏的人可以拿一塊蛋白堅果巧克磚" },
     {
       title:
-        "分享跟朋友遊玩的照片並分享到自己的 Instagram 限時動態並加註 #UrMart過年禮盒，完成可自由選擇獲得任一蛋白點心",
+        "拿出手機，秀出你最近一次健身紀錄，若在 7 天內，獲得一根蛋白酥脆條",
+    },
+    { title: "可選擇與你右邊的人交換一塊蛋白點心" },
+    { title: "可選擇與淺藍色啞鈴玩家人交換一款蛋白點心" },
+    { title: "可選擇讓你左邊的人將任一蛋白點心贈予你" },
+    { title: "可選擇跟在場任一你指定的人交換一款蛋白點心" },
+    {
+      title:
+        "分享跟朋友遊玩的照片並分享到自己的 Instagram 限時動態並加註 #UrMart過年禮盒，完成可自由選擇獲得任一點心",
     },
     {
-      title: "邀請任一玩家跟你比伏地挺身，做比較多下的可以獲得一塊蛋白巧克力棒",
+      title:
+        "邀請任一玩家跟你比賽伏地挺身，做比較多下的可以獲得一塊蛋白堅果巧克磚",
     },
     { title: "邀請任一玩家跟你比平板撐，輸的人倒退 3 格" },
   ];
@@ -121,25 +123,25 @@ export default function NewYearDiceGame() {
       title: "新年新希望許下今年要更健康，抽一張肌會卡",
     },
     {
-      title: "休息是為了更好的暫停，暫停一次",
+      title: "休息是為了更好的增肌，暫停一次",
     },
     {
-      title: "沒抵擋住過年餐桌上的零食誘惑，把自己的蛋白堅果巧克力棒吃掉",
-    },
-    {
-      title:
-        "過年媽媽問你有沒有什麼比較健康的餅乾可以吃，你推薦了 UrPICK 蛋白酥脆條，獲得一根",
-    },
-    {
-      title: "吃完年夜飯想來點甜的，獲得一塊蛋白堅果巧克力棒",
+      title: "沒抵擋住過年餐桌上的零食誘惑，把自己的蛋白堅果巧克力磚吃掉",
     },
     {
       title:
-        "今天跟朋友去健身房的時候櫃檯在做補充肌酸的推廣活動，獲得一包即食肌酸",
+        "過年媽媽問你有沒有什麼比較健康的餅乾可以吃，你推薦了 UrP!CK 蛋白酥脆條，獲得一根",
+    },
+    {
+      title: "吃完年夜飯想來點甜的，獲得一塊蛋白堅果巧克力磚",
     },
     {
       title:
-        "跟朋友去 UrMart 實體店的時候發現了新上架的酷東西，獲得一包即食肌酸",
+        "今天跟朋友去健身房的時候櫃檯在做補充肌酸的推廣活動，獲得一包即吞肌酸",
+    },
+    {
+      title:
+        "跟朋友去 UrMart 實體店的時候發現了新上架的酷東西，獲得一包即吞肌酸",
     },
     {
       title:
@@ -163,17 +165,17 @@ export default function NewYearDiceGame() {
     },
     {
       title:
-        "在運動的時候遇見藍色啞鈴玩家，分享給他你最近吃到覺得很好吃的 UrPICK 蛋白堅果巧克力棒；把你有的分他",
+        "在運動的時候遇見藍色啞鈴玩家，分享給他你最近吃到覺得很好吃的 UrP!CK 蛋白堅果巧克力磚；把你有的蛋白巧克磚送給他",
     },
     {
-      title: "去健身房前補充了肌酸，即將肌酸放回禮盒中",
+      title: "去健身房前補充了肌酸，即將即吞肌酸放回禮盒中",
     },
     {
       title:
         "今天早上出去運動的你現在有點餓了；如果你有蛋白酥脆條，請吃掉一根補充體力",
     },
     {
-      title: "如果你現在沒有蛋白堅果巧克力棒，補給一塊！",
+      title: "如果你現在沒有蛋白堅果巧克力磚，補給一塊！",
     },
     {
       title: "如果你現在沒有蛋白酥脆條，補給一根！",
@@ -189,17 +191,19 @@ export default function NewYearDiceGame() {
     },
     {
       title:
-        " 🎉 恭喜發財！你抽中 UrMart 紅包啦，獲得全站 9 折優惠碼！輸入「2026GIFTBOX9」領取優惠",
+        "🎉 恭喜發財！你抽中 UrMart 紅包啦，獲得全站 9 折優惠碼！輸入「2026GIFTBOX9」領取優惠",
       desc: "＊記得先截圖優惠碼喔！＊使用時間：即刻起～2026/7/31",
       cta: "https://urmart.com/claim-coupon/9158",
     },
     {
-      title: "新春好運到！你在蛋白之神的祝福下，獲得 UrMart $99 免運券！",
+      title:
+        "🧧 新春好運到！你在蛋白之神的祝福下，獲得 UrMart $99 免運券！輸入「2026GIFTBOX99FS」領取優惠",
       desc: "＊記得先截圖優惠碼喔！＊使用時間：即刻起～2026/7/31",
       cta: "https://urmart.com/claim-coupon/9159",
     },
     {
-      title: "你被財神爺光顧了！你獲得一包 UrPICK 的透明乳清啦！",
+      title:
+        "🥛 你被財神爺光顧了！你獲得一包 UrP!CK 的透明乳清啦！輸入「2026GIFTBOXGIFT」可以於下次購物滿額時免費領取喔 ",
       desc: "於獲得當下～2026/2/28 於 UrMart 消費滿 $799 時可免費獲得一包 UrP!CK 透明乳清（口味任選，贈完為止，不累贈）",
       cta: "https://urmart.com/claim-coupon/9161",
     },
@@ -658,7 +662,8 @@ export default function NewYearDiceGame() {
             </button>
             <div className="card-modal-content">
               <h2
-                className={`font-bold text-2xl sm:text-lg md:text-xl lg:text-2xl mb-4 text-center ${
+                className={`font-bold text-xl sm:text-lg md:text-xl 
+    ${card?.desc ? "lg:text-xl" : "lg:text-2xl"} mb-4 text-center ${
                   cardType === "chance" ? "" : "text-yellow-50"
                 }`}
               >
@@ -699,7 +704,7 @@ export default function NewYearDiceGame() {
           />
           <div className="text-center w-full sm:w-[750px] h-[150px] sm:h-[380px] flex flex-col items-center justify-end sm:pb-14 gap-4 sm:gap-8 relative">
             <button
-              className="card-modal-close text-red-800 border-4 border-red-800 bg-yellow-50 absolute top-6 right-6"
+              className="card-modal-close text-red-800 border-4 border-red-800 bg-yellow-50 absolute top-0 right-2 scale-75 sm:scale-100 sm:top-6 sm:right-6"
               onClick={closeChanceCardModal}
             >
               X
