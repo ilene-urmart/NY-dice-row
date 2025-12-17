@@ -28,6 +28,7 @@ export default function NewYearDiceGame() {
   const [isAudioInitialized, setIsAudioInitialized] = useState(false);
   const [isBackgroundMusicPlaying, setIsBackgroundMusicPlaying] =
     useState(false);
+  const [diceBNumber, setDiceBNumber] = useState<number>(0);
   const diceAudioRef = useRef<HTMLAudioElement | null>(null);
   const backgroundAudioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -299,6 +300,11 @@ export default function NewYearDiceGame() {
 
     const newDiceAValue = Math.floor(Math.random() * 6) + 1;
     const newExercise = exercises[Math.floor(Math.random() * exercises.length)];
+    if (newExercise.name === "平板撐" || newExercise.name === "開合跳") {
+      setDiceBNumber(newDiceAValue * 10);
+    } else {
+      setDiceBNumber(newDiceAValue);
+    }
 
     setTimeout(() => {
       setDiceAValue(newDiceAValue);
@@ -333,10 +339,6 @@ export default function NewYearDiceGame() {
       availableIndexes.length === 0 ? [randomIdx] : [...prev, randomIdx]
     );
     setShowCardModal(true);
-  };
-
-  const exerciseSets = () => {
-    return Math.floor(Math.random() * 20) + 1;
   };
 
   const closeChanceCardModal = () => {
@@ -734,7 +736,7 @@ export default function NewYearDiceGame() {
               <div className="col-span-3 text-left">
                 做{" "}
                 <span className="text-red-800 text-4xl sm:text-7xl font-bold">
-                  {exerciseSets()}
+                  {diceBNumber}
                 </span>{" "}
                 {diceBUnit}
                 <span className="text-red-800 font-bold"> {diceBValue}</span>
