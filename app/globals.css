@@ -147,8 +147,6 @@
 
 .card-modal-close {
   position: absolute;
-  top: 5%;
-  right: 7%;
   width: 35px;
   height: 35px;
   border-radius: 50%;
@@ -163,7 +161,6 @@
 }
 
 .card-modal-close:hover {
-  background: rgba(220, 38, 38, 1);
   transform: scale(1.1);
 }
 

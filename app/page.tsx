@@ -647,7 +647,7 @@ export default function NewYearDiceGame() {
             onClick={(e) => e.stopPropagation()}
           >
             <button
-              className={`card-modal-close text-black border-5 ${
+              className={`card-modal-close text-black border-5 top-6 right-6 ${
                 cardType === "chance"
                   ? "text-black border-black"
                   : "text-yellow-200 border-yellow-100"
@@ -697,7 +697,13 @@ export default function NewYearDiceGame() {
             alt=""
             className="absolute z-[-100] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px]"
           />
-          <div className="text-center w-full sm:w-[750px] h-[150px] sm:h-[380px] flex flex-col items-center justify-end sm:pb-14 gap-4 sm:gap-8">
+          <div className="text-center w-full sm:w-[750px] h-[150px] sm:h-[380px] flex flex-col items-center justify-end sm:pb-14 gap-4 sm:gap-8 relative">
+            <button
+              className="card-modal-close text-red-800 border-4 border-red-800 bg-yellow-50 absolute top-6 right-6"
+              onClick={closeChanceCardModal}
+            >
+              X
+            </button>
             <div className="grid grid-cols-6  w-full items-center text-xl sm:text-4xl">
               <div className="col-span-2 text-right">
                 前進{" "}
@@ -720,7 +726,10 @@ export default function NewYearDiceGame() {
               </div>
             </div>
             <button
-              onClick={() => setShowResultPopup(false)}
+              onClick={() => {
+                setShowResultPopup(false);
+                rollDice();
+              }}
               className="w-[50%]"
             >
               <img
