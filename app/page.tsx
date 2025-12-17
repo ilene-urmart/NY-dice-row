@@ -26,11 +26,8 @@ export default function NewYearDiceGame() {
   const [isMobile, setIsMobile] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
   const [isAudioInitialized, setIsAudioInitialized] = useState(false);
-  const [isBackgroundMusicPlaying, setIsBackgroundMusicPlaying] =
-    useState(false);
   const [diceBNumber, setDiceBNumber] = useState<number>(0);
   const diceAudioRef = useRef<HTMLAudioElement | null>(null);
-  const backgroundAudioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 900);
@@ -266,27 +263,7 @@ export default function NewYearDiceGame() {
     }, 1000);
   }, [isAudioInitialized, initializeAudio]);
 
-  const toggleBackgroundMusic = async () => {
-    if (isBackgroundMusicPlaying) {
-      backgroundAudioRef.current?.pause();
-      setIsBackgroundMusicPlaying(false);
-    } else {
-      backgroundAudioRef.current?.play();
-      setIsBackgroundMusicPlaying(true);
-    }
-  };
-
   const startGame = useCallback(async () => {
-    if (!backgroundAudioRef.current) {
-      backgroundAudioRef.current = new Audio("/audio/bg.mp3");
-      backgroundAudioRef.current.loop = true;
-      backgroundAudioRef.current.volume = 0.3;
-      backgroundAudioRef.current.preload = "auto";
-
-      await backgroundAudioRef.current.play();
-      setIsBackgroundMusicPlaying(true);
-    }
-
     await initializeAudio();
     setGameStarted(true);
   }, [initializeAudio]);
@@ -850,18 +827,6 @@ export default function NewYearDiceGame() {
             }}
           />
         </section>
-      </div>
-
-      <div className="fixed bottom-4 left-4 z-50">
-        <button
-          onClick={toggleBackgroundMusic}
-          className="text-red-800 rounded-full w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center shadow-lg transform transition-all duration-300 hover:scale-110 border-2 border-yellow-600 cursor-pointer hover:shadow-[0_0_16px_4px_rgba(250,204,21,0.7)]"
-          title={isBackgroundMusicPlaying ? "暫停背景音樂" : "播放背景音樂"}
-        >
-          <span className="text-lg sm:text-xl">
-            {isBackgroundMusicPlaying ? "🔊" : "🔇"}
-          </span>
-        </button>
       </div>
     </main>
   );
