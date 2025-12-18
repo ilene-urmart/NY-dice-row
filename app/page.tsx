@@ -25,7 +25,8 @@ export default function NewYearDiceGame() {
   const [cardType, setCardType] = useState<string>("");
   const [isMobile, setIsMobile] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
-  const [showIntroModal, setShowIntroModal] = useState(true);
+  const [showIntroModal, setShowIntroModal] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
   const [isAudioInitialized, setIsAudioInitialized] = useState(false);
   const [diceBNumber, setDiceBNumber] = useState<number>(0);
   const diceAudioRef = useRef<HTMLAudioElement | null>(null);
@@ -36,6 +37,28 @@ export default function NewYearDiceGame() {
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
+
+  useEffect(() => {
+    const hasSeenIntro = sessionStorage.getItem("hasSeenIntroModal");
+    if (!hasSeenIntro) {
+      setShowIntroModal(true);
+      sessionStorage.setItem("hasSeenIntroModal", "true");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (showIntroModal) {
+      const timer = setTimeout(() => {
+        setIsClosing(true);
+        setTimeout(() => {
+          setShowIntroModal(false);
+          setIsClosing(false);
+        }, 700);
+      }, 6000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [showIntroModal]);
 
   const exercises = [
     { name: "深蹲", unit: "下" },
@@ -328,6 +351,14 @@ export default function NewYearDiceGame() {
     setTimeout(() => setCard(null), 300);
   };
 
+  const closeIntroModal = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setShowIntroModal(false);
+      setIsClosing(false);
+    }, 700);
+  };
+
   const getFinalRotationForNumber = (num: number) => {
     const rotations = {
       1: { x: 0, y: 0, z: 0 },
@@ -574,11 +605,12 @@ export default function NewYearDiceGame() {
   if (!gameStarted) {
     return (
       <main className="main-first-container">
-        {/* intro modal */}
         {showIntroModal && (
           <div
-            className="card-modal-overlay relative"
-            onClick={() => setShowIntroModal(false)}
+            className={`card-modal-overlay relative intro-modal-animate ${
+              isClosing ? "closing" : ""
+            }`}
+            onClick={closeIntroModal}
           >
             <img
               src="/01-intro-bg.png"
@@ -588,7 +620,7 @@ export default function NewYearDiceGame() {
             <div className="text-center w-full sm:w-[750px] h-[150px] sm:h-[380px] flex flex-col items-center justify-center gap-4 sm:gap-8 relative px-6 sm:px-18">
               <button
                 className="card-modal-close text-red-800 border-4 border-red-800 bg-yellow-50 absolute top-0 right-2 scale-75 sm:scale-100 sm:top-6 sm:right-6"
-                onClick={() => setShowIntroModal(false)}
+                onClick={closeIntroModal}
               >
                 X
               </button>
@@ -610,7 +642,6 @@ export default function NewYearDiceGame() {
             </div>
           </div>
         )}
-        {/* main */}
         <section className="text-center py-2 sm:py-6 md:py-8 px-6 sm:px-8 md:px-10 w-full sm:w-[50%] self-center sm:self-end flex flex-col gap-2 sm:gap-0">
           <header className={isMobile ? "mt-4" : ""}>
             <img
