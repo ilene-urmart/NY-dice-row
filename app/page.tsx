@@ -707,7 +707,7 @@ export default function NewYearDiceGame() {
   return (
     <main className="main-second-bg min-h-screen bg-gradient-to-br from-red-800 via-red-700 to-red-900 flex flex-col relative overflow-hidden p-2 sm:p-10 relative">
       <button
-        className="text-[#fbbf24] text-[10px] sm:text-lg absolute top-2 sm:top-4 left-2 sm:left-4 cursor-pointer bg-red-900 px-2 sm:px-4 rounded-lg sm:rounded-2xl border border-[#fbbf24] hover:scale-105 transition-all duration-300 z-10"
+        className="text-[#fbbf24] text-[10px] sm:text-lg absolute top-2 sm:top-4 left-2 sm:left-4 cursor-pointer bg-red-900 px-2 sm:px-4 rounded-lg sm:rounded-2xl border border-[#fbbf24] transition-all duration-300 z-10 glow-rotate hover:scale-102"
         onClick={() => setGameStarted(false)}
       >
         &lt; 再看一次規則
