@@ -65,7 +65,12 @@ export default function NewYearDiceGame() {
 
       // 可選：預載入最重要的圖片（不阻塞載入）
       const preloadCriticalImages = () => {
-        const criticalImages = ["/title.png", "/02-cta.png"];
+        const criticalImages = [
+          "/title.png",
+          "/02-bg-mobile.png",
+          "/02-dice-result-bg.png",
+          "/01-intro-bg.png",
+        ];
         criticalImages.forEach((src) => {
           const img = new Image();
           img.src = src; // 不等待載入完成，只是提前開始載入
