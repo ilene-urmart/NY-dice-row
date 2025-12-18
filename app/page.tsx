@@ -45,57 +45,37 @@ export default function NewYearDiceGame() {
         sessionStorage.setItem("hasSeenIntroModal", "true");
       }
 
-      const criticalImages = [
-        "/title.png",
-        "/01-intro-bg.png",
-        "/01-desc-mobile.png",
-        "/01-desc-web.png",
-        "/02-bg-mobile.jpg",
-        "/02-bg-web.jpg",
-        "/02-cta.png",
-        "/02-chance-front.png",
-        "/02-destiny-front.png",
-        "/02-dice-result-bg.png",
-        "/02-card-cta.png",
-        "/02-dice-result-cta.png",
-      ];
+      // 裝置和瀏覽器檢測
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+      const isSafari = /^((?!chrome|android).)*safari/i.test(
+        navigator.userAgent
+      );
+      const isMobileDevice = window.innerWidth < 900;
 
-      const loadImage = (src: string) => {
-        return new Promise<boolean>((resolve) => {
+      // 根據裝置調整載入時間
+      let loadingTime = 1500; // 預設載入時間
+
+      if (isIOS) {
+        loadingTime = 1200; // iOS 較短載入時間
+      } else if (isSafari) {
+        loadingTime = 1300; // Safari 較短載入時間
+      } else if (isMobileDevice) {
+        loadingTime = 1400; // 手機裝置較短載入時間
+      }
+
+      // 可選：預載入最重要的圖片（不阻塞載入）
+      const preloadCriticalImages = () => {
+        const criticalImages = ["/title.png", "/02-cta.png"];
+        criticalImages.forEach((src) => {
           const img = new Image();
-          img.onload = () => resolve(true);
-          img.onerror = () => resolve(false);
-          img.src = src;
-
-          if (img.complete) {
-            resolve(true);
-          }
+          img.src = src; // 不等待載入完成，只是提前開始載入
         });
       };
 
-      await Promise.all(criticalImages.map(loadImage));
+      preloadCriticalImages();
 
-      try {
-        const audio = new Audio("/audio/dice.mp3");
-        audio.preload = "auto";
-        await new Promise<void>((resolve) => {
-          const onCanPlay = () => resolve();
-          const onError = () => resolve();
-          audio.addEventListener("canplaythrough", onCanPlay, { once: true });
-          audio.addEventListener("error", onError, { once: true });
-        });
-      } catch (error) {
-        console.log("Audio preload failed, continuing...");
-      }
-
-      if (document.fonts) {
-        await document.fonts.ready;
-      }
-
-      const minLoadingTime = new Promise<void>((resolve) =>
-        setTimeout(resolve, 800)
-      );
-      await minLoadingTime;
+      // 固定載入時間
+      await new Promise<void>((resolve) => setTimeout(resolve, loadingTime));
 
       setIsLoading(false);
     };
