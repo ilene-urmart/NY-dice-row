@@ -27,23 +27,82 @@ export default function NewYearDiceGame() {
   const [gameStarted, setGameStarted] = useState(false);
   const [showIntroModal, setShowIntroModal] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isAudioInitialized, setIsAudioInitialized] = useState(false);
   const [diceBNumber, setDiceBNumber] = useState<number>(0);
   const diceAudioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 900);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
 
-  useEffect(() => {
-    const hasSeenIntro = sessionStorage.getItem("hasSeenIntroModal");
-    if (!hasSeenIntro) {
-      setShowIntroModal(true);
-      sessionStorage.setItem("hasSeenIntroModal", "true");
-    }
+    const initializeApp = async () => {
+      checkMobile();
+      window.addEventListener("resize", checkMobile);
+
+      const hasSeenIntro = sessionStorage.getItem("hasSeenIntroModal");
+      if (!hasSeenIntro) {
+        setShowIntroModal(true);
+        sessionStorage.setItem("hasSeenIntroModal", "true");
+      }
+
+      const criticalImages = [
+        "/title.png",
+        "/01-intro-bg.png",
+        "/02-bg-mobile.jpg",
+        "/02-bg-web.jpg",
+        "/02-cta.png",
+        "/02-chance-front.png",
+        "/02-destiny-front.png",
+        "/02-dice-result-bg.png",
+        "/02-card-cta.png",
+        "/02-dice-result-cta.png",
+      ];
+
+      const loadImage = (src: string) => {
+        return new Promise<boolean>((resolve) => {
+          const img = new Image();
+          img.onload = () => resolve(true);
+          img.onerror = () => resolve(false);
+          img.src = src;
+
+          if (img.complete) {
+            resolve(true);
+          }
+        });
+      };
+
+      await Promise.all(criticalImages.map(loadImage));
+
+      try {
+        const audio = new Audio("/audio/dice.mp3");
+        audio.preload = "auto";
+        await new Promise<void>((resolve) => {
+          const onCanPlay = () => resolve();
+          const onError = () => resolve();
+          audio.addEventListener("canplaythrough", onCanPlay, { once: true });
+          audio.addEventListener("error", onError, { once: true });
+        });
+      } catch (error) {
+        console.log("Audio preload failed, continuing...");
+      }
+
+      if (document.fonts) {
+        await document.fonts.ready;
+      }
+
+      const minLoadingTime = new Promise<void>((resolve) =>
+        setTimeout(resolve, 800)
+      );
+      await minLoadingTime;
+
+      setIsLoading(false);
+    };
+
+    initializeApp();
+
+    return () => {
+      window.removeEventListener("resize", checkMobile);
+    };
   }, []);
 
   useEffect(() => {
@@ -505,6 +564,34 @@ export default function NewYearDiceGame() {
     );
   };
 
+  const LoadingScreen = () => {
+    return (
+      <div className="fixed inset-0 bg-gradient-to-br from-red-800 via-red-700 to-red-900 flex flex-col justify-center items-center z-[9999]">
+        <div className="text-center">
+          <img
+            src="/title.png"
+            alt="Loading..."
+            className="w-64 sm:w-96 mb-8 animate-pulse"
+          />
+          <div className="flex justify-center gap-2 mb-4">
+            <div
+              className="w-3 h-3 sm:w-5 sm:h-5 bg-[#eab569] border-2 sm:border-4 border-red-800 rounded-full animate-bounce"
+              style={{ animationDelay: "0s" }}
+            ></div>
+            <div
+              className="w-3 h-3 sm:w-5 sm:h-5 bg-[#eab569] border-2 sm:border-4 border-red-800 rounded-full animate-bounce"
+              style={{ animationDelay: "0.1s" }}
+            ></div>
+            <div
+              className="w-3 h-3 sm:w-5 sm:h-5 bg-[#eab569] border-2 sm:border-4 border-red-800 rounded-full animate-bounce"
+              style={{ animationDelay: "0.2s" }}
+            ></div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const render3DDiceB = () => {
     return (
       <motion.div
@@ -591,6 +678,10 @@ export default function NewYearDiceGame() {
       </motion.div>
     );
   };
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
 
   if (gameEnded) {
     return (
