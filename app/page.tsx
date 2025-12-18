@@ -104,7 +104,7 @@ export default function NewYearDiceGame() {
       // 預載入其他重要圖片（不阻塞載入完成）
       const preloadOtherImages = () => {
         const otherImages = [
-          "/02-bg-mobile.png",
+          "/02-bg-mobile.jpg",
           "/02-dice-result-bg.png",
           "/02-chance-front.png",
           "/02-destiny-front.png",
