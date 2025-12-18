@@ -48,6 +48,8 @@ export default function NewYearDiceGame() {
       const criticalImages = [
         "/title.png",
         "/01-intro-bg.png",
+        "/01-desc-mobile.png",
+        "/01-desc-web.png",
         "/02-bg-mobile.jpg",
         "/02-bg-web.jpg",
         "/02-cta.png",
