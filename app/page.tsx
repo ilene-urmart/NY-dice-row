@@ -63,23 +63,61 @@ export default function NewYearDiceGame() {
         loadingTime = 1400; // 手機裝置較短載入時間
       }
 
-      // 可選：預載入最重要的圖片（不阻塞載入）
-      const preloadCriticalImages = () => {
-        const criticalImages = [
-          "/title.png",
+      // 必須載入的關鍵圖片
+      const criticalImages = ["/title.png", "/01-intro-bg.png"];
+
+      // 載入圖片的 Promise（有超時保護）
+      const loadImageWithTimeout = (src: string, timeout = 5000) => {
+        return Promise.race([
+          new Promise<boolean>((resolve) => {
+            const img = new Image();
+            img.onload = () => resolve(true);
+            img.onerror = () => resolve(false);
+            img.src = src;
+            if (img.complete) resolve(true);
+          }),
+          new Promise<boolean>((resolve) =>
+            setTimeout(() => resolve(false), timeout)
+          ),
+        ]);
+      };
+
+      // 等待關鍵圖片載入完成
+      try {
+        const imageLoadResults = await Promise.all(
+          criticalImages.map((src) => loadImageWithTimeout(src))
+        );
+
+        // 檢查是否有圖片載入失敗
+        const allImagesLoaded = imageLoadResults.every(
+          (result) => result === true
+        );
+        if (!allImagesLoaded) {
+          console.warn(
+            "Some critical images failed to load, but continuing..."
+          );
+        }
+      } catch (error) {
+        console.warn("Error loading critical images:", error);
+      }
+
+      // 預載入其他重要圖片（不阻塞載入完成）
+      const preloadOtherImages = () => {
+        const otherImages = [
           "/02-bg-mobile.png",
           "/02-dice-result-bg.png",
-          "/01-intro-bg.png",
+          "/02-chance-front.png",
+          "/02-destiny-front.png",
         ];
-        criticalImages.forEach((src) => {
+        otherImages.forEach((src) => {
           const img = new Image();
-          img.src = src; // 不等待載入完成，只是提前開始載入
+          img.src = src;
         });
       };
 
-      preloadCriticalImages();
+      preloadOtherImages();
 
-      // 固定載入時間
+      // 確保最少載入時間（避免載入太快）
       await new Promise<void>((resolve) => setTimeout(resolve, loadingTime));
 
       setIsLoading(false);
