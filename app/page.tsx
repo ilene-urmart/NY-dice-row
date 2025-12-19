@@ -748,10 +748,6 @@ export default function NewYearDiceGame() {
                 <br />
                 這個過年，讓自律放個假
                 <br />
-                {/* <span className="font-semibold text-2xl sm:text-5xl text-red-800">
-                  UrP!CK 2026 新年禮盒
-                </span> */}
-                {/* <br /> */}
                 跟親朋好友展開一場
                 <br />
                 充滿歡笑、美味、營養的蛋白質攻防戰吧！
