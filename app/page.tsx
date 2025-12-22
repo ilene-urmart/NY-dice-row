@@ -777,7 +777,7 @@ export default function NewYearDiceGame() {
             <img
               src={isMobile ? "/01-desc-mobile.png" : "/01-desc-web.png"}
               alt="獲勝方式"
-              className={isMobile ? "scale-[1.1]" : "scale-[1.15]"}
+              className={isMobile ? "scale-[1.2]" : "scale-[1.1]"}
             />
           </section>
           <button
