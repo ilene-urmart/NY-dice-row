@@ -10,7 +10,7 @@ const nextConfig = {
   trailingSlash: true,
   devIndicators: false,
   assetPrefix: ".",
-  basePath: "/event/new-year-2026",
+  // basePath: "/event/new-year-2026",
 };
 
 export default nextConfig;

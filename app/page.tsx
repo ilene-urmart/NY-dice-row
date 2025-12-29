@@ -18,6 +18,7 @@ export default function NewYearDiceGame() {
   const [diceBValue, setDiceBValue] = useState<string>("深蹲");
   const [diceBUnit, setDiceBUnit] = useState<string>("下");
   const [isRolling, setIsRolling] = useState(false);
+  const [isDiceAnimating, setIsDiceAnimating] = useState(false);
   const [showResultPopup, setShowResultPopup] = useState(false);
   const [card, setCard] = useState<CardType | null>(null);
   const [showCardModal, setShowCardModal] = useState(false);
@@ -392,8 +393,8 @@ export default function NewYearDiceGame() {
   }, [initializeAudio]);
 
   const rollDice = async () => {
-    if (isRolling) return;
     setIsRolling(true);
+    setIsDiceAnimating(true);
     setShowResultPopup(false);
 
     await playDiceSound();
@@ -414,6 +415,7 @@ export default function NewYearDiceGame() {
 
       setTimeout(() => {
         setShowResultPopup(true);
+        setIsDiceAnimating(false);
       }, 1000);
     }, 1000);
   };
@@ -987,6 +989,7 @@ export default function NewYearDiceGame() {
               isMobile ? "" : "translate-y-18"
             }`}
             onClick={() => {
+              if (isDiceAnimating) return;
               setCardType("chance");
               drawCard(
                 chanceCards,
@@ -1016,7 +1019,7 @@ export default function NewYearDiceGame() {
             <div className="flex flex-col items-center">
               <div
                 className="cursor-pointer transform transition-all duration-300 hover:scale-105"
-                onClick={rollDice}
+                onClick={isDiceAnimating ? undefined : rollDice}
               >
                 {render3DDiceA()}
               </div>
@@ -1024,7 +1027,7 @@ export default function NewYearDiceGame() {
             <div className="flex flex-col items-center">
               <div
                 className="cursor-pointer transform transition-all duration-300 hover:scale-105"
-                onClick={rollDice}
+                onClick={isDiceAnimating ? undefined : rollDice}
               >
                 {render3DDiceB()}
               </div>
@@ -1033,7 +1036,7 @@ export default function NewYearDiceGame() {
           <button
             className="p-6"
             onClick={rollDice}
-            disabled={isRolling}
+            disabled={isDiceAnimating}
           >
             <img
               src="./02-cta.png"
@@ -1055,6 +1058,7 @@ export default function NewYearDiceGame() {
               isMobile ? "" : "translate-y-18"
             }`}
             onClick={() => {
+              if (isDiceAnimating) return;
               setCardType("destiny");
               drawCard(
                 destinyCards,
