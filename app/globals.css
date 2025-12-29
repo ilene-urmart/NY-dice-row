@@ -21,7 +21,6 @@
 }
 
 .main-first-container {
-  background-image: url("/01-bg-web.jpg");
   background-color: #a2191e;
   background-size: cover;
   background-position: 15% top;
@@ -34,7 +33,6 @@
 }
 
 .main-second-bg {
-  background-image: url("/02-bg-web.jpg");
   background-color: #a2191e;
   background-size: cover;
   background-position: center;
@@ -144,13 +142,6 @@
   background-repeat: no-repeat;
   background-position: center;
   padding-inline: 25px;
-}
-
-.card-modal-chance-bg {
-  background-image: url("/02-chance-back.png");
-}
-.card-modal-destiny-bg {
-  background-image: url("/02-destiny-back.png");
 }
 
 .card-modal-close {
@@ -315,7 +306,6 @@
 
 @media (max-width: 899px) {
   .main-first-container {
-    background-image: url("/01-bg-mobile.jpg");
     background-position: center center;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -324,7 +314,6 @@
     padding: 10px;
   }
   .main-second-bg {
-    background-image: url("/02-bg-mobile.jpg");
     background-position: center center;
     -webkit-background-size: cover;
     -moz-background-size: cover;

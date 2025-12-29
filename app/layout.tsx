@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description: "馬上成為蛋白富翁 - 禮盒 X Urmart 骰子遊戲",
   generator: "react",
   icons: {
-    icon: "/favicon.ico",
+    icon: "./favicon.ico",
   },
 };
 

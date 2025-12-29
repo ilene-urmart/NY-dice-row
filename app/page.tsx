@@ -64,7 +64,7 @@ export default function NewYearDiceGame() {
       }
 
       // 必須載入的關鍵圖片
-      const criticalImages = ["/title.png", "/01-intro-bg.png"];
+      const criticalImages = ["./title.png", "./01-intro-bg.png"];
 
       // 載入圖片的 Promise（有超時保護）
       const loadImageWithTimeout = (src: string, timeout = 5000) => {
@@ -104,10 +104,10 @@ export default function NewYearDiceGame() {
       // 預載入其他重要圖片（不阻塞載入完成）
       const preloadOtherImages = () => {
         const otherImages = [
-          "/02-bg-mobile.jpg",
-          "/02-dice-result-bg.png",
-          "/02-chance-front.png",
-          "/02-destiny-front.png",
+          "./02-bg-mobile.jpg",
+          "./02-dice-result-bg.png",
+          "./02-chance-front.png",
+          "./02-destiny-front.png",
         ];
         otherImages.forEach((src) => {
           const img = new Image();
@@ -333,23 +333,23 @@ export default function NewYearDiceGame() {
   const bannerData = [
     {
       path: "https://urmart.com/category/1784?page=1",
-      src: "/01-bn-01.png",
+      src: "./01-bn-01.png",
       alt: "差異化品項",
     },
     {
       path: "https://urmart.com/category/450?page=1&couponid=4063",
-      src: "/01-bn-02.jpg",
+      src: "./01-bn-02.jpg",
       alt: "蛋白新手修煉手冊",
     },
     {
       path: "https://urmart.com/tag/11342?page=1",
-      src: "/01-bn-03.jpg",
+      src: "./01-bn-03.jpg",
       alt: "UrP!CK",
     },
   ];
 
   const initializeAudio = useCallback(async () => {
-    const audio = new Audio("/audio/dice.mp3");
+    const audio = new Audio("./audio/dice.mp3");
     audio.volume = 0.1;
     await audio.play();
     setTimeout(() => {
@@ -357,7 +357,7 @@ export default function NewYearDiceGame() {
       audio.currentTime = 0;
     }, 100);
 
-    diceAudioRef.current = new Audio("/audio/dice.mp3");
+    diceAudioRef.current = new Audio("./audio/dice.mp3");
     diceAudioRef.current.preload = "auto";
     diceAudioRef.current.volume = 1.0;
 
@@ -369,7 +369,7 @@ export default function NewYearDiceGame() {
       await initializeAudio();
     }
 
-    const audio = new Audio("/audio/dice.mp3");
+    const audio = new Audio("./audio/dice.mp3");
     audio.volume = 1.0;
     audio.muted = false;
 
@@ -605,7 +605,7 @@ export default function NewYearDiceGame() {
       <div className="fixed inset-0 bg-gradient-to-br from-red-800 via-red-700 to-red-900 flex flex-col justify-center items-center z-[9999]">
         <div className="text-center">
           <img
-            src="/title.png"
+            src="./title.png"
             alt="Loading..."
             className="w-64 sm:w-96 mb-8 animate-pulse"
           />
@@ -721,7 +721,14 @@ export default function NewYearDiceGame() {
 
   if (gameEnded) {
     return (
-      <main className="bg-[url('/02-bg-mobile.jpg')] sm:bg-[url('/02-bg-web.jpg')] bg-cover bg-center min-h-screen flex justify-center items-center">
+      <main
+        className="bg-cover bg-center min-h-screen flex justify-center items-center"
+        style={{
+          backgroundImage: `url(${
+            isMobile ? "./02-bg-mobile.jpg" : "./02-bg-web.jpg"
+          })`,
+        }}
+      >
         <h1 className="text-4xl sm:text-7xl font-bold text-[#D4A554]">
           活動已結束
         </h1>
@@ -731,7 +738,14 @@ export default function NewYearDiceGame() {
 
   if (!gameStarted) {
     return (
-      <main className="main-first-container">
+      <main
+        className="main-first-container"
+        style={{
+          backgroundImage: `url(${
+            isMobile ? "./01-bg-mobile.jpg" : "./01-bg-web.jpg"
+          })`,
+        }}
+      >
         {showIntroModal && (
           <div
             className={`card-modal-overlay relative intro-modal-animate ${
@@ -740,7 +754,7 @@ export default function NewYearDiceGame() {
             onClick={closeIntroModal}
           >
             <img
-              src="/01-intro-bg.png"
+              src="./01-intro-bg.png"
               alt=""
               className="absolute z-[-100] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px]"
             />
@@ -768,14 +782,14 @@ export default function NewYearDiceGame() {
         <section className="text-center py-2 sm:py-6 md:py-8 px-6 sm:px-8 md:px-10 w-full sm:w-[50%] self-center sm:self-end flex flex-col gap-2 sm:gap-0">
           <header className={isMobile ? "mt-4" : ""}>
             <img
-              src="/title.png"
+              src="./title.png"
               alt="馬上成為蛋白富翁"
               className={isMobile ? "scale-[1.1]" : ""}
             />
           </header>
           <section className="text-base sm:text-lg md:text-xl text-yellow-300">
             <img
-              src={isMobile ? "/01-desc-mobile.png" : "/01-desc-web.png"}
+              src={isMobile ? "./01-desc-mobile.png" : "./01-desc-web.png"}
               alt="獲勝方式"
               className={isMobile ? "scale-[1.2]" : "scale-[1.1]"}
             />
@@ -785,7 +799,7 @@ export default function NewYearDiceGame() {
             className={`cursor-pointer ${isMobile ? "p-0 mt-4" : "p-5"}`}
           >
             <img
-              src="/01-cta.png"
+              src="./01-cta.png"
               alt="開始遊戲"
               className="translate-y-[-40px] transition-all duration-300 heartbeat"
             />
@@ -828,7 +842,14 @@ export default function NewYearDiceGame() {
   }
 
   return (
-    <main className="main-second-bg min-h-screen bg-gradient-to-br from-red-800 via-red-700 to-red-900 flex flex-col relative overflow-hidden p-2 sm:p-10 relative">
+    <main
+      className="main-second-bg min-h-screen bg-gradient-to-br from-red-800 via-red-700 to-red-900 flex flex-col relative overflow-hidden p-2 sm:p-10 relative"
+      style={{
+        backgroundImage: `url(${
+          isMobile ? "./02-bg-mobile.jpg" : "./02-bg-web.jpg"
+        })`,
+      }}
+    >
       <button
         className="text-[#fbbf24] text-[10px] sm:text-lg absolute top-2 sm:top-4 left-2 sm:left-4 cursor-pointer bg-red-900 px-2 sm:px-4 rounded-lg sm:rounded-2xl border border-[#fbbf24] transition-all duration-300 z-10 glow-rotate hover:scale-102"
         onClick={() => setGameStarted(false)}
@@ -841,12 +862,18 @@ export default function NewYearDiceGame() {
           onClick={closeChanceCardModal}
         >
           <div
-            className={`card-modal ${
-              cardType === "chance"
-                ? "card-modal-chance-bg"
-                : "card-modal-destiny-bg"
-            }`}
+            className="card-modal"
             onClick={(e) => e.stopPropagation()}
+            style={{
+              backgroundImage: `url(${
+                cardType === "chance"
+                  ? "./02-chance-back.png"
+                  : "./02-destiny-back.png"
+              })`,
+              backgroundPosition: "center",
+              backgroundSize: "contain",
+              backgroundRepeat: "no-repeat",
+            }}
           >
             <button
               className={`card-modal-close text-black border-5 top-6 right-6 ${
@@ -878,7 +905,7 @@ export default function NewYearDiceGame() {
                   </div>
                   <button onClick={() => window.open(card?.cta, "_blank")}>
                     <img
-                      src="/02-card-cta.png"
+                      src="./02-card-cta.png"
                       alt="前往領取"
                       className="cursor-pointer hover:scale-105 transition-all duration-300 shake"
                     />
@@ -896,7 +923,7 @@ export default function NewYearDiceGame() {
           onClick={() => setShowResultPopup(false)}
         >
           <img
-            src="/02-dice-result-bg.png"
+            src="./02-dice-result-bg.png"
             alt=""
             className="absolute z-[-100] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px]"
           />
@@ -936,7 +963,7 @@ export default function NewYearDiceGame() {
               className="w-[50%]"
             >
               <img
-                src="/02-dice-result-cta.png"
+                src="./02-dice-result-cta.png"
                 alt="再骰一次"
                 className="cursor-pointer shake"
               />
@@ -954,7 +981,7 @@ export default function NewYearDiceGame() {
           } items-center `}
         >
           <img
-            src="/02-chance-front.png"
+            src="./02-chance-front.png"
             alt="肌會卡"
             className={`w-[80%] sm:w-[45%] hover:-rotate-4 transition-all duration-300 cursor-pointer ${
               isMobile ? "" : "translate-y-18"
@@ -980,7 +1007,7 @@ export default function NewYearDiceGame() {
         >
           <header className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-yellow-400 mb-2 drop-shadow-lg text-balance">
             <img
-              src="/title.png"
+              src="./title.png"
               alt="馬上成為蛋白富翁"
               className={isMobile ? "scale-[1.05]" : "scale-110"}
             />
@@ -1009,7 +1036,7 @@ export default function NewYearDiceGame() {
             disabled={isRolling}
           >
             <img
-              src="/02-cta.png"
+              src="./02-cta.png"
               alt="點擊擲骰子"
               className="w-full h-full cursor-pointer transition-all duration-300 heartbeat disabled:opacity-50"
             />
@@ -1022,7 +1049,7 @@ export default function NewYearDiceGame() {
           } items-center `}
         >
           <img
-            src="/02-destiny-front.png"
+            src="./02-destiny-front.png"
             alt="命運卡"
             className={`w-[80%] sm:w-[45%] hover:rotate-4 transition-all duration-300 cursor-pointer ${
               isMobile ? "" : "translate-y-18"
